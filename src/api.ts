@@ -1,5 +1,7 @@
 // Client for the proxy (worker/index.ts).
-const BASE = (import.meta.env.VITE_PROXY_URL as string | undefined) || 'http://localhost:8787'; // unset or empty → local proxy
+// Dev falls back to the local proxy. A production build never does: a public page calling localhost makes
+// browsers ask for local-network permission.
+const BASE = (import.meta.env.VITE_PROXY_URL as string | undefined) || (import.meta.env.DEV ? 'http://localhost:8787' : '');
 
 export type ApiCode = 'unreachable' | 'private_or_missing' | 'rate_limited' | 'unsupported_link' | 'not_found' | 'bad_account' | string;
 export class ApiError extends Error {
@@ -11,6 +13,7 @@ export class ApiError extends Error {
 }
 
 async function get(path: string): Promise<Response> {
+  if (!BASE) throw new ApiError('unreachable');
   let res: Response;
   try {
     res = await fetch(BASE + path);
