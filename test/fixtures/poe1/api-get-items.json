@@ -1,0 +1,1626 @@
+{
+  "items": [
+    {
+      "verified": false,
+      "w": 1,
+      "h": 1,
+      "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvQW1ldGh5c3RSaW5nVW5pcXVlIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/1ade97e0ac/AmethystRingUnique.png",
+      "league": "Covens",
+      "id": "36bd51d387dcffc8a50227dfebbbc6921bbde291d5609549b09b59579369a922",
+      "name": "Death Rush",
+      "typeLine": "Amethyst Ring",
+      "baseType": "Amethyst Ring",
+      "rarity": "Unique",
+      "ilvl": 48,
+      "identified": true,
+      "requirements": [
+        {
+          "name": "Level",
+          "values": [
+            [
+              "30",
+              0
+            ]
+          ],
+          "displayMode": 0,
+          "type": 62
+        }
+      ],
+      "implicitMods": [
+        {
+          "description": "+18% to Chaos Resistance"
+        }
+      ],
+      "explicitMods": [
+        {
+          "description": "Recover 3% of Life on Kill"
+        },
+        {
+          "description": "Gain Adrenaline for 3 seconds on Kill"
+        }
+      ],
+      "flavourText": [
+        "To truly appreciate life you must be there when it ends"
+      ],
+      "frameType": 3,
+      "frameTypeId": "Unique",
+      "x": 0,
+      "y": 0,
+      "inventoryId": "Ring"
+    },
+    {
+      "verified": false,
+      "w": 2,
+      "h": 2,
+      "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL0VzaHNNaXJyb3IiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MSwibXV0YXRlZCI6dHJ1ZX1d/a73116a924/EshsMirror.png",
+      "league": "Covens",
+      "id": "46a4b925b63d7c4f8e3ade59112125460dda3f3ef22b00a1b3371e3248613ea6",
+      "mutated": true,
+      "sockets": [
+        {
+          "group": 0,
+          "attr": "G",
+          "sColour": "W"
+        },
+        {
+          "group": 0,
+          "attr": "G",
+          "sColour": "W"
+        },
+        {
+          "group": 0,
+          "attr": "G",
+          "sColour": "W"
+        }
+      ],
+      "name": "Foulborn Esh's Mirror",
+      "typeLine": "Vaal Spirit Shield",
+      "baseType": "Vaal Spirit Shield",
+      "rarity": "Unique",
+      "ilvl": 71,
+      "identified": true,
+      "properties": [
+        {
+          "name": "Chance to Block",
+          "values": [
+            [
+              "24%",
+              0
+            ]
+          ],
+          "displayMode": 0,
+          "type": 15
+        },
+        {
+          "name": "Energy Shield",
+          "values": [
+            [
+              "176",
+              1
+            ]
+          ],
+          "displayMode": 0,
+          "type": 18
+        }
+      ],
+      "requirements": [
+        {
+          "name": "Level",
+          "values": [
+            [
+              "70",
+              0
+            ]
+          ],
+          "displayMode": 0,
+          "type": 62,
+          "suffix": "(gem)"
+        },
+        {
+          "name": "Str",
+          "values": [
+            [
+              "68",
+              0
+            ]
+          ],
+          "displayMode": 1,
+          "type": 63,
+          "suffix": "(gem)"
+        },
+        {
+          "name": "Dex",
+          "values": [
+            [
+              "155",
+              0
+            ]
+          ],
+          "displayMode": 1,
+          "type": 64,
+          "suffix": "(gem)"
+        },
+        {
+          "name": "Int",
+          "values": [
+            [
+              "159",
+              0
+            ]
+          ],
+          "displayMode": 1,
+          "type": 65
+        }
+      ],
+      "implicitMods": [
+        {
+          "description": "10% increased Spell Damage"
+        }
+      ],
+      "explicitMods": [
+        {
+          "description": "+26 to Intelligence"
+        },
+        {
+          "description": "208% increased Energy Shield"
+        },
+        {
+          "description": "Shocks you inflict spread to other Enemies within 1.5 metres"
+        },
+        {
+          "description": "Adds 1 to 10 Lightning Damage for each Shocked Enemy you've Killed Recently"
+        },
+        {
+          "description": "Damage cannot be Reflected",
+          "flags": {
+            "mutated": true
+          }
+        }
+      ],
+      "flavourText": [
+        "She looked upon her reflection\r",
+        "and trembled, and shook,\r",
+        "until she was not what she saw."
+      ],
+      "frameType": 3,
+      "frameTypeId": "Unique",
+      "x": 0,
+      "y": 0,
+      "inventoryId": "Offhand",
+      "socketedItems": [
+        {
+          "verified": false,
+          "w": 1,
+          "h": 1,
+          "icon": "https://web.poecdn.com/gen/image/WzMwLDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9WYWFsR2Vtcy9WYWFsSGFzdGUiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/f19f4c8a3f/VaalHaste.png",
+          "support": false,
+          "league": "Covens",
+          "id": "f57051e29d241b93fc45d9ec3b4c02db9ca1b2b50eac3ccd0f2d9e14d84cd631",
+          "name": "",
+          "typeLine": "Vaal Haste",
+          "baseType": "Vaal Haste",
+          "ilvl": 0,
+          "identified": true,
+          "corrupted": true,
+          "properties": [
+            {
+              "name": "Aura, Spell, AoE, Duration, Vaal",
+              "values": [],
+              "displayMode": 0
+            },
+            {
+              "name": "Level",
+              "values": [
+                [
+                  "20 (Max)",
+                  0
+                ]
+              ],
+              "displayMode": 0,
+              "type": 5
+            },
+            {
+              "name": "Reservation",
+              "values": [
+                [
+                  "50% Mana",
+                  0
+                ]
+              ],
+              "displayMode": 0
+            },
+            {
+              "name": "Cooldown Time",
+              "values": [
+                [
+                  "1.20 sec",
+                  0
+                ]
+              ],
+              "displayMode": 0
+            },
+            {
+              "name": "Cast Time",
+              "values": [
+                [
+                  "Instant",
+                  0
+                ]
+              ],
+              "displayMode": 0
+            }
+          ],
+          "requirements": [
+            {
+              "name": "Level",
+              "values": [
+                [
+                  "70",
+                  0
+                ]
+              ],
+              "displayMode": 0,
+              "type": 62
+            },
+            {
+              "name": "Dex",
+              "values": [
+                [
+                  "155",
+                  0
+                ]
+              ],
+              "displayMode": 1,
+              "type": 64
+            }
+          ],
+          "secDescrText": "Casts an aura that increases the movement speed, attack speed and cast speed of you and your allies.",
+          "explicitMods": [
+            {
+              "description": "+1.9 metres to radius"
+            },
+            {
+              "description": "You and nearby allies gain 16% increased Movement Speed"
+            },
+            {
+              "description": "You and nearby allies gain 24% increased Cast Speed"
+            },
+            {
+              "description": "You and nearby allies gain 24% increased Attack Speed"
+            }
+          ],
+          "descrText": "Place into an item socket to gain this skill. Right click to remove from a socket.",
+          "frameType": 4,
+          "frameTypeId": "Gem",
+          "socket": 0,
+          "colour": "D",
+          "hybrid": {
+            "isVaalGem": true,
+            "baseTypeName": "Haste",
+            "properties": [
+              {
+                "name": "Cooldown Time",
+                "values": [
+                  [
+                    "0.50 sec",
+                    0
+                  ]
+                ],
+                "displayMode": 0
+              },
+              {
+                "name": "Souls Per Use",
+                "values": [
+                  [
+                    "50",
+                    0
+                  ]
+                ],
+                "displayMode": 0
+              },
+              {
+                "name": "Can Store {0} Use",
+                "values": [
+                  [
+                    "1",
+                    0
+                  ]
+                ],
+                "displayMode": 3
+              },
+              {
+                "name": "Soul Gain Prevention",
+                "values": [
+                  [
+                    "6 sec",
+                    0
+                  ]
+                ],
+                "displayMode": 0
+              },
+              {
+                "name": "Cast Time",
+                "values": [
+                  [
+                    "Instant",
+                    0
+                  ]
+                ],
+                "displayMode": 0
+              }
+            ],
+            "explicitMods": [
+              "Base duration is 4.00 seconds",
+              "Modifiers to Buff Duration also apply to this Skill's Soul Gain Prevention",
+              "+1.9 metres to radius",
+              "You and nearby allies gain 20% increased Movement Speed",
+              "You and nearby allies gain 31% increased Cast Speed",
+              "You and nearby allies gain 31% increased Attack Speed"
+            ],
+            "secDescrText": "Casts a temporary aura that increases the movement speed, attack speed and cast speed of you and your allies."
+          }
+        },
+        {
+          "verified": false,
+          "w": 1,
+          "h": 1,
+          "icon": "https://web.poecdn.com/gen/image/WzMwLDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9QdXJpdHkiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/0b82235250/Purity.png",
+          "support": false,
+          "league": "Covens",
+          "id": "497c1f6daebc96532bb668550ddcf6c2cd9ff6ad20f28ab0c0ab82cb77d06869",
+          "name": "",
+          "typeLine": "Purity of Elements",
+          "baseType": "Purity of Elements",
+          "ilvl": 0,
+          "identified": true,
+          "properties": [
+            {
+              "name": "Aura, Spell, AoE",
+              "values": [],
+              "displayMode": 0
+            },
+            {
+              "name": "Level",
+              "values": [
+                [
+                  "20 (Max)",
+                  0
+                ]
+              ],
+              "displayMode": 0,
+              "type": 5
+            },
+            {
+              "name": "Reservation",
+              "values": [
+                [
+                  "50% Mana",
+                  0
+                ]
+              ],
+              "displayMode": 0
+            },
+            {
+              "name": "Cooldown Time",
+              "values": [
+                [
+                  "1.20 sec",
+                  0
+                ]
+              ],
+              "displayMode": 0
+            },
+            {
+              "name": "Cast Time",
+              "values": [
+                [
+                  "Instant",
+                  0
+                ]
+              ],
+              "displayMode": 0
+            }
+          ],
+          "requirements": [
+            {
+              "name": "Level",
+              "values": [
+                [
+                  "70",
+                  0
+                ]
+              ],
+              "displayMode": 0,
+              "type": 62
+            },
+            {
+              "name": "Str",
+              "values": [
+                [
+                  "68",
+                  0
+                ]
+              ],
+              "displayMode": 1,
+              "type": 63
+            },
+            {
+              "name": "Int",
+              "values": [
+                [
+                  "98",
+                  0
+                ]
+              ],
+              "displayMode": 1,
+              "type": 65
+            }
+          ],
+          "secDescrText": "Casts an aura that grants elemental resistances and elemental ailment immunity to you and your allies.",
+          "explicitMods": [
+            {
+              "description": "+1.9 metres to radius"
+            },
+            {
+              "description": "You and nearby allies gain +34% to all Elemental Resistances"
+            },
+            {
+              "description": "You and nearby allies are Immune to all Elemental Ailments"
+            }
+          ],
+          "descrText": "Place into an item socket to gain this skill. Right click to remove from a socket.",
+          "frameType": 4,
+          "frameTypeId": "Gem",
+          "socket": 2,
+          "colour": "I"
+        }
+      ]
+    },
+    {
+      "verified": false,
+      "w": 2,
+      "h": 2,
+      "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9Dcm9zc2luZ1RoZVZvaWQiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/f3747eb0f4/CrossingTheVoid.png",
+      "league": "Covens",
+      "id": "e217b95c4f3666695c3e8b9831844b76d3b4c5b399a834a757430f76c791a6e2",
+      "influences": {
+        "shaper": true
+      },
+      "shaper": true,
+      "sockets": [
+        {
+          "group": 0,
+          "attr": "G",
+          "sColour": "W"
+        },
+        {
+          "group": 0,
+          "attr": "G",
+          "sColour": "W"
+        },
+        {
+          "group": 0,
+          "attr": "G",
+          "sColour": "W"
+        },
+        {
+          "group": 0,
+          "attr": "G",
+          "sColour": "W"
+        }
+      ],
+      "name": "Replica Voidwalker",
+      "typeLine": "Murder Boots",
+      "baseType": "Murder Boots",
+      "rarity": "Unique",
+      "ilvl": 70,
+      "identified": true,
+      "properties": [
+        {
+          "name": "Evasion Rating",
+          "values": [
+            [
+              "556",
+              1
+            ]
+          ],
+          "displayMode": 0,
+          "type": 17
+        },
+        {
+          "name": "Energy Shield",
+          "values": [
+            [
+              "56",
+              1
+            ]
+          ],
+          "displayMode": 0,
+          "type": 18
+        }
+      ],
+      "requirements": [
+        {
+          "name": "Level",
+          "values": [
+            [
+              "69",
+              0
+            ]
+          ],
+          "displayMode": 0,
+          "type": 62
+        },
+        {
+          "name": "Dex",
+          "values": [
+            [
+              "82",
+              0
+            ]
+          ],
+          "displayMode": 1,
+          "type": 64
+        },
+        {
+          "name": "Int",
+          "values": [
+            [
+              "42",
+              0
+            ]
+          ],
+          "displayMode": 1,
+          "type": 65
+        }
+      ],
+      "explicitMods": [
+        {
+          "description": "+35 to Dexterity"
+        },
+        {
+          "description": "166% increased Evasion and Energy Shield"
+        },
+        {
+          "description": "30% increased Movement Speed"
+        },
+        {
+          "description": "10% increased Damage taken while Phasing"
+        },
+        {
+          "description": "You have Phasing if you've Killed Recently"
+        },
+        {
+          "description": "Projectiles Chain +1 times while you have Phasing"
+        },
+        {
+          "description": "Celestial Footprints"
+        }
+      ],
+      "flavourText": [
+        "\"Test subject was able to walk into the walls of his chamber after breaking a rabbit's neck.\r",
+        "He was not fast enough, however. Suggest we begin excavation to retrieve prototype.\""
+      ],
+      "replica": true,
+      "frameType": 3,
+      "frameTypeId": "Unique",
+      "x": 0,
+      "y": 0,
+      "inventoryId": "Boots",
+      "socketedItems": []
+    },
+    {
+      "verified": false,
+      "w": 1,
+      "h": 3,
+      "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9XYW5kcy9QaXNjYXRvcnNWaWdpbCIsInciOjEsImgiOjMsInNjYWxlIjoxfV0/332f80f7ac/PiscatorsVigil.png",
+      "league": "Covens",
+      "id": "32659616327438f460bd3096a82260fdc3f9215765b35ecae3b235aea5f121b2",
+      "sockets": [
+        {
+          "group": 0,
+          "attr": "G",
+          "sColour": "W"
+        },
+        {
+          "group": 1,
+          "attr": "G",
+          "sColour": "W"
+        },
+        {
+          "group": 1,
+          "attr": "G",
+          "sColour": "W"
+        }
+      ],
+      "name": "Piscator's Vigil",
+      "typeLine": "Kinetic Wand",
+      "baseType": "Kinetic Wand",
+      "rarity": "Unique",
+      "ilvl": 71,
+      "identified": true,
+      "properties": [
+        {
+          "name": "Wand",
+          "values": [],
+          "displayMode": 0
+        },
+        {
+          "name": "Critical Strike Chance",
+          "values": [
+            [
+              "10.88%",
+              1
+            ]
+          ],
+          "displayMode": 0,
+          "type": 12
+        },
+        {
+          "name": "Attacks per Second",
+          "values": [
+            [
+              "1.86",
+              1
+            ]
+          ],
+          "displayMode": 0,
+          "type": 13
+        }
+      ],
+      "requirements": [
+        {
+          "name": "Level",
+          "values": [
+            [
+              "72",
+              0
+            ]
+          ],
+          "displayMode": 0,
+          "type": 62,
+          "suffix": "(gem)"
+        },
+        {
+          "name": "Str",
+          "values": [
+            [
+              "111",
+              0
+            ]
+          ],
+          "displayMode": 1,
+          "type": 63,
+          "suffix": "(gem)"
+        },
+        {
+          "name": "Dex",
+          "values": [
+            [
+              "123",
+              0
+            ]
+          ],
+          "displayMode": 1,
+          "type": 64,
+          "suffix": "(gem)"
+        },
+        {
+          "name": "Int",
+          "values": [
+            [
+              "188",
+              0
+            ]
+          ],
+          "displayMode": 1,
+          "type": 65
+        }
+      ],
+      "implicitMods": [
+        {
+          "description": "Cannot roll Caster Modifiers"
+        }
+      ],
+      "explicitMods": [
+        {
+          "description": "No Physical Damage"
+        },
+        {
+          "description": "16% increased Attack Speed"
+        },
+        {
+          "description": "28% increased Critical Strike Chance"
+        },
+        {
+          "description": "+360 to Accuracy Rating"
+        },
+        {
+          "description": "Attacks with this Weapon have 115% increased Elemental Damage"
+        },
+        {
+          "description": "Damage with Weapons Penetrates 5% Elemental Resistances"
+        }
+      ],
+      "flavourText": [
+        "\"Stone still, amidst the reeds,\r",
+        "breath fogging in the iron cold air. \r",
+        "he sits, he waits, he watches. \r",
+        "A piscatorial vigil, sat by the river, \r",
+        "his cathedral, his patience his unanswered prayer.\"\r",
+        "- Jojoba Mansell, bard, angler, adventurer"
+      ],
+      "frameType": 3,
+      "frameTypeId": "Unique",
+      "x": 0,
+      "y": 0,
+      "inventoryId": "Weapon",
+      "socketedItems": [
+        {
+          "verified": false,
+          "w": 1,
+          "h": 1,
+          "icon": "https://web.poecdn.com/gen/image/WzMwLDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9BY2N1cmFjeWFuZENyaXRpY2FsQ2hhbmNlQXVyYSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/e8f00e99b6/AccuracyandCriticalChanceAura.png",
+          "support": false,
+          "league": "Covens",
+          "id": "d348a914d55f71f1ee2e97682e465a241eb1f14f2e9bc1251b32e2c6243fc7bc",
+          "name": "",
+          "typeLine": "Precision",
+          "baseType": "Precision",
+          "ilvl": 0,
+          "identified": true,
+          "corrupted": true,
+          "properties": [
+            {
+              "name": "Aura, Critical, Spell, AoE",
+              "values": [],
+              "displayMode": 0
+            },
+            {
+              "name": "Level",
+              "values": [
+                [
+                  "21 (Max)",
+                  0
+                ]
+              ],
+              "displayMode": 0,
+              "type": 5
+            },
+            {
+              "name": "Reservation",
+              "values": [
+                [
+                  "195 Mana",
+                  0
+                ]
+              ],
+              "displayMode": 0
+            },
+            {
+              "name": "Cooldown Time",
+              "values": [
+                [
+                  "1.20 sec",
+                  0
+                ]
+              ],
+              "displayMode": 0
+            },
+            {
+              "name": "Cast Time",
+              "values": [
+                [
+                  "Instant",
+                  0
+                ]
+              ],
+              "displayMode": 0
+            }
+          ],
+          "requirements": [
+            {
+              "name": "Level",
+              "values": [
+                [
+                  "72",
+                  0
+                ]
+              ],
+              "displayMode": 0,
+              "type": 62
+            },
+            {
+              "name": "Dex",
+              "values": [
+                [
+                  "123",
+                  0
+                ]
+              ],
+              "displayMode": 1,
+              "type": 64
+            }
+          ],
+          "secDescrText": "Casts an aura that grants accuracy and critical strike chance to you and your allies.",
+          "explicitMods": [
+            {
+              "description": "+2 metres to radius"
+            },
+            {
+              "description": "You and nearby allies gain 60% increased Critical Strike Chance"
+            },
+            {
+              "description": "You and nearby allies gain +778 to Accuracy Rating"
+            }
+          ],
+          "descrText": "Place into an item socket to gain this skill. Right click to remove from a socket.",
+          "frameType": 4,
+          "frameTypeId": "Gem",
+          "socket": 0,
+          "colour": "D"
+        },
+        {
+          "verified": false,
+          "w": 1,
+          "h": 1,
+          "icon": "https://web.poecdn.com/gen/image/WzMwLDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9DbGFyaXR5IiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/6a0df6b3db/Clarity.png",
+          "support": false,
+          "league": "Covens",
+          "id": "f16d9f6a241119d1c09412c53f096395c81c4a18eb01c8bf2699ddd7aeaee222",
+          "name": "",
+          "typeLine": "Clarity",
+          "baseType": "Clarity",
+          "ilvl": 0,
+          "identified": true,
+          "properties": [
+            {
+              "name": "Aura, Spell, AoE",
+              "values": [],
+              "displayMode": 0
+            },
+            {
+              "name": "Level",
+              "values": [
+                [
+                  "20 (Max)",
+                  0
+                ]
+              ],
+              "displayMode": 0,
+              "type": 5
+            },
+            {
+              "name": "Reservation",
+              "values": [
+                [
+                  "279 Mana",
+                  0
+                ]
+              ],
+              "displayMode": 0
+            },
+            {
+              "name": "Cooldown Time",
+              "values": [
+                [
+                  "1.20 sec",
+                  0
+                ]
+              ],
+              "displayMode": 0
+            },
+            {
+              "name": "Cast Time",
+              "values": [
+                [
+                  "Instant",
+                  0
+                ]
+              ],
+              "displayMode": 0
+            }
+          ],
+          "requirements": [
+            {
+              "name": "Level",
+              "values": [
+                [
+                  "70",
+                  0
+                ]
+              ],
+              "displayMode": 0,
+              "type": 62
+            },
+            {
+              "name": "Int",
+              "values": [
+                [
+                  "119",
+                  0
+                ]
+              ],
+              "displayMode": 1,
+              "type": 65
+            }
+          ],
+          "secDescrText": "Casts an aura that grants mana regeneration to you and your allies.",
+          "explicitMods": [
+            {
+              "description": "+1.9 metres to radius"
+            },
+            {
+              "description": "You and nearby Allies Regenerate 33 Mana per second"
+            }
+          ],
+          "descrText": "Place into an item socket to gain this skill. Right click to remove from a socket.",
+          "frameType": 4,
+          "frameTypeId": "Gem",
+          "socket": 1,
+          "colour": "I"
+        },
+        {
+          "verified": false,
+          "w": 1,
+          "h": 1,
+          "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9TdXBwb3J0L0Jsb29kTWFnaWMiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/f90e23f319/BloodMagic.png",
+          "support": true,
+          "league": "Covens",
+          "id": "8d2ec86aff12f840a55d9aa8973c6ffbe671ba3e20b7ebda1123e3969897598d",
+          "name": "",
+          "typeLine": "Arrogance Support",
+          "baseType": "Arrogance Support",
+          "ilvl": 0,
+          "identified": true,
+          "properties": [
+            {
+              "name": "Aura, Support",
+              "values": [],
+              "displayMode": 0
+            },
+            {
+              "name": "Level",
+              "values": [
+                [
+                  "20 (Max)",
+                  0
+                ]
+              ],
+              "displayMode": 0,
+              "type": 5
+            },
+            {
+              "name": "Cost & Reservation Multiplier",
+              "values": [
+                [
+                  "201%",
+                  0
+                ]
+              ],
+              "displayMode": 0
+            }
+          ],
+          "requirements": [
+            {
+              "name": "Level",
+              "values": [
+                [
+                  "70",
+                  0
+                ]
+              ],
+              "displayMode": 0,
+              "type": 62
+            },
+            {
+              "name": "Str",
+              "values": [
+                [
+                  "111",
+                  0
+                ]
+              ],
+              "displayMode": 1,
+              "type": 63
+            }
+          ],
+          "secDescrText": "Supports any non-blessing skill with a reservation.",
+          "explicitMods": [
+            {
+              "description": "Supported Skills have 19% increased Aura effect"
+            },
+            {
+              "description": "Supported Skills Reserve Life instead of Mana"
+            }
+          ],
+          "descrText": "This is a Support Gem. It does not grant a bonus to your character, but to skills in sockets connected to it. Place into an item socket connected to a socket containing the Skill Gem you wish to augment. Right click to remove from a socket.",
+          "frameType": 4,
+          "frameTypeId": "Gem",
+          "socket": 2,
+          "colour": "S"
+        }
+      ]
+    },
+    {
+      "verified": false,
+      "w": 2,
+      "h": 2,
+      "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0hlYXRzaGl2ZXIiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/b1860c890e/Heatshiver.png",
+      "league": "Covens",
+      "id": "c3c452c71f345d56757baa1e7f1818e4518121c44293948351e086e6eaf8961c",
+      "sockets": [
+        {
+          "group": 0,
+          "attr": "G",
+          "sColour": "W"
+        },
+        {
+          "group": 0,
+          "attr": "G",
+          "sColour": "W"
+        },
+        {
+          "group": 0,
+          "attr": "G",
+          "sColour": "W"
+        },
+        {
+          "group": 0,
+          "attr": "G",
+          "sColour": "W"
+        }
+      ],
+      "name": "Replica Heatshiver",
+      "typeLine": "Leather Hood",
+      "baseType": "Leather Hood",
+      "rarity": "Unique",
+      "ilvl": 58,
+      "identified": true,
+      "properties": [
+        {
+          "name": "Evasion Rating",
+          "values": [
+            [
+              "234",
+              1
+            ]
+          ],
+          "displayMode": 0,
+          "type": 17
+        }
+      ],
+      "requirements": [
+        {
+          "name": "Level",
+          "values": [
+            [
+              "70",
+              0
+            ]
+          ],
+          "displayMode": 0,
+          "type": 62,
+          "suffix": "(gem)"
+        },
+        {
+          "name": "Str",
+          "values": [
+            [
+              "111",
+              0
+            ]
+          ],
+          "displayMode": 1,
+          "type": 63,
+          "suffix": "(gem)"
+        },
+        {
+          "name": "Dex",
+          "values": [
+            [
+              "155",
+              0
+            ]
+          ],
+          "displayMode": 1,
+          "type": 64,
+          "suffix": "(gem)"
+        }
+      ],
+      "explicitMods": [
+        {
+          "description": "97% increased Evasion Rating"
+        },
+        {
+          "description": "60% increased Mana Regeneration Rate"
+        },
+        {
+          "description": "+23% to Cold Resistance"
+        },
+        {
+          "description": "+21% to Lightning Resistance"
+        },
+        {
+          "description": "Gain 1% of Lightning Damage as Extra Cold Damage per 2% Shock Effect on Enemy"
+        }
+      ],
+      "flavourText": [
+        "\"The storm... that lightning... I'd be dead if I hadn't...\r",
+        "but it was cold. Ice cold! It's not what we think, and\r",
+        "the plan won't work! Where's Arn?! I have to tell him!\"\r",
+        "- Researcher Graven, infirmary report"
+      ],
+      "replica": true,
+      "frameType": 3,
+      "frameTypeId": "Unique",
+      "x": 0,
+      "y": 0,
+      "inventoryId": "Helm",
+      "socketedItems": [
+        {
+          "verified": false,
+          "w": 1,
+          "h": 1,
+          "icon": "https://web.poecdn.com/gen/image/WzMwLDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9Qcm9qZWN0aWxlV2Vha25lc3MiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/92040afb2a/ProjectileWeakness.png",
+          "support": false,
+          "league": "Covens",
+          "id": "3c81bc155ddee2f7ef7c70ff7813cbd3eb408897d7c0e68194c60666a0f489df",
+          "name": "",
+          "typeLine": "Sniper's Mark",
+          "baseType": "Sniper's Mark",
+          "ilvl": 0,
+          "identified": true,
+          "properties": [
+            {
+              "name": "Spell, Curse, Mark",
+              "values": [],
+              "displayMode": 0
+            },
+            {
+              "name": "Level",
+              "values": [
+                [
+                  "20 (Max)",
+                  0
+                ]
+              ],
+              "displayMode": 0,
+              "type": 5
+            },
+            {
+              "name": "Cost",
+              "values": [
+                [
+                  "33 Mana",
+                  0
+                ]
+              ],
+              "displayMode": 0
+            },
+            {
+              "name": "Cast Time",
+              "values": [
+                [
+                  "0.50 sec",
+                  0
+                ]
+              ],
+              "displayMode": 0
+            },
+            {
+              "name": "Quality",
+              "values": [
+                [
+                  "+8%",
+                  1
+                ]
+              ],
+              "displayMode": 0,
+              "type": 6
+            }
+          ],
+          "requirements": [
+            {
+              "name": "Level",
+              "values": [
+                [
+                  "70",
+                  0
+                ]
+              ],
+              "displayMode": 0,
+              "type": 62
+            },
+            {
+              "name": "Dex",
+              "values": [
+                [
+                  "155",
+                  0
+                ]
+              ],
+              "displayMode": 1,
+              "type": 64
+            }
+          ],
+          "secDescrText": "Curses a single enemy, increasing the damage they take from projectiles, and making projectiles split when hitting them, to hit other targets around them. You can only have one Mark at a time.",
+          "explicitMods": [
+            {
+              "description": "Cursed enemies take 31% increased Damage from Projectile Hits"
+            },
+            {
+              "description": "Projectiles which Hit Cursed Enemies Split towards 2 additional targets"
+            }
+          ],
+          "descrText": "Place into an item socket to gain this skill. Right click to remove from a socket.",
+          "frameType": 4,
+          "frameTypeId": "Gem",
+          "socket": 0,
+          "colour": "D"
+        },
+        {
+          "verified": false,
+          "w": 1,
+          "h": 1,
+          "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9TdXBwb3J0L01hcmtPbkhpdHRpbmciLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/082becefa3/MarkOnHitting.png",
+          "support": true,
+          "league": "Covens",
+          "id": "2543646168fdf7a5e8adce64cec4c855136f7587d9f344b3e018a386cfd59c12",
+          "name": "",
+          "typeLine": "Mark On Hit Support",
+          "baseType": "Mark On Hit Support",
+          "ilvl": 0,
+          "identified": true,
+          "properties": [
+            {
+              "name": "Support, Mark, Trigger",
+              "values": [],
+              "displayMode": 0
+            },
+            {
+              "name": "Level",
+              "values": [
+                [
+                  "20 (Max)",
+                  0
+                ]
+              ],
+              "displayMode": 0,
+              "type": 5
+            },
+            {
+              "name": "Cost & Reservation Multiplier",
+              "values": [
+                [
+                  "200%",
+                  0
+                ]
+              ],
+              "displayMode": 0
+            },
+            {
+              "name": "Cooldown Time",
+              "values": [
+                [
+                  "4.00 sec",
+                  0
+                ]
+              ],
+              "displayMode": 0
+            }
+          ],
+          "requirements": [
+            {
+              "name": "Level",
+              "values": [
+                [
+                  "70",
+                  0
+                ]
+              ],
+              "displayMode": 0,
+              "type": 62
+            },
+            {
+              "name": "Dex",
+              "values": [
+                [
+                  "111",
+                  0
+                ]
+              ],
+              "displayMode": 1,
+              "type": 64
+            }
+          ],
+          "secDescrText": "Supports mark curse skills.",
+          "explicitMods": [
+            {
+              "description": "21% reduced Effect of Marks from Supported Skills"
+            },
+            {
+              "description": "Trigger Supported Skill when you Hit a Rare or Unique Enemy with an Attack"
+            }
+          ],
+          "descrText": "This is a Support Gem. It does not grant a bonus to your character, but to skills in sockets connected to it. Place into an item socket connected to a socket containing the Skill Gem you wish to augment. Right click to remove from a socket.",
+          "frameType": 4,
+          "frameTypeId": "Gem",
+          "socket": 1,
+          "colour": "D"
+        },
+        {
+          "verified": false,
+          "w": 1,
+          "h": 1,
+          "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9TdXBwb3J0L0xpZmVUYXAiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/9cef38ae47/LifeTap.png",
+          "support": true,
+          "league": "Covens",
+          "id": "12fe9ec73fca8632feff6052d1a3d68b948216e5f5389b5a39d314e6143743ce",
+          "name": "",
+          "typeLine": "Lifetap Support",
+          "baseType": "Lifetap Support",
+          "ilvl": 0,
+          "identified": true,
+          "properties": [
+            {
+              "name": "Support, Duration",
+              "values": [],
+              "displayMode": 0
+            },
+            {
+              "name": "Level",
+              "values": [
+                [
+                  "20 (Max)",
+                  0
+                ]
+              ],
+              "displayMode": 0,
+              "type": 5
+            },
+            {
+              "name": "Cost & Reservation Multiplier",
+              "values": [
+                [
+                  "300%",
+                  0
+                ]
+              ],
+              "displayMode": 0
+            }
+          ],
+          "requirements": [
+            {
+              "name": "Level",
+              "values": [
+                [
+                  "70",
+                  0
+                ]
+              ],
+              "displayMode": 0,
+              "type": 62
+            },
+            {
+              "name": "Str",
+              "values": [
+                [
+                  "111",
+                  0
+                ]
+              ],
+              "displayMode": 1,
+              "type": 63
+            }
+          ],
+          "secDescrText": "Supports any non-blessing skill. Minions cannot gain the Lifetap buff.",
+          "explicitMods": [
+            {
+              "description": "Supported Skills Cost Life instead of Mana"
+            },
+            {
+              "description": "Gain Lifetap after Spending a total of 273 Life on Upfront\nCosts and Effects of a Supported Skill"
+            },
+            {
+              "description": "Supported Skills deal 19% more Damage while you have Lifetap"
+            },
+            {
+              "description": "Lifetap lasts 4 seconds"
+            }
+          ],
+          "descrText": "This is a Support Gem. It does not grant a bonus to your character, but to skills in sockets connected to it. Place into an item socket connected to a socket containing the Skill Gem you wish to augment. Right click to remove from a socket.",
+          "frameType": 4,
+          "frameTypeId": "Gem",
+          "socket": 2,
+          "colour": "S"
+        },
+        {
+          "verified": false,
+          "w": 1,
+          "h": 1,
+          "icon": "https://web.poecdn.com/gen/image/WzMwLDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9CbG9vZFJhZ2UiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/199f6b772e/BloodRage.png",
+          "support": false,
+          "league": "Covens",
+          "id": "9c7fc81f82ead75508e72eda234cb36e0a3eacc8b85723a3953d969a9697f0ac",
+          "name": "",
+          "typeLine": "Blood Rage",
+          "baseType": "Blood Rage",
+          "ilvl": 0,
+          "identified": true,
+          "properties": [
+            {
+              "name": "Spell, Duration, Physical",
+              "values": [],
+              "displayMode": 0
+            },
+            {
+              "name": "Level",
+              "values": [
+                [
+                  "20 (Max)",
+                  0
+                ]
+              ],
+              "displayMode": 0,
+              "type": 5
+            },
+            {
+              "name": "Cost",
+              "values": [
+                [
+                  "29 Life",
+                  0
+                ]
+              ],
+              "displayMode": 0
+            },
+            {
+              "name": "Cooldown Time",
+              "values": [
+                [
+                  "1.00 sec",
+                  0
+                ]
+              ],
+              "displayMode": 0
+            },
+            {
+              "name": "Cast Time",
+              "values": [
+                [
+                  "Instant",
+                  0
+                ]
+              ],
+              "displayMode": 0
+            }
+          ],
+          "requirements": [
+            {
+              "name": "Level",
+              "values": [
+                [
+                  "70",
+                  0
+                ]
+              ],
+              "displayMode": 0,
+              "type": 62
+            },
+            {
+              "name": "Dex",
+              "values": [
+                [
+                  "155",
+                  0
+                ]
+              ],
+              "displayMode": 1,
+              "type": 64
+            }
+          ],
+          "secDescrText": "Adds a buff that deals Physical Damage over time, while increasing Attack Speed and Life Leech. Killing an enemy while this buff is active refreshes the buff duration, and can grant a Frenzy Charge.",
+          "explicitMods": [
+            {
+              "description": "Base duration is 10.80 seconds"
+            },
+            {
+              "description": "Grants 15% increased Attack Speed"
+            },
+            {
+              "description": "1.2% of Attack Physical Damage Leeched as Life"
+            },
+            {
+              "description": "You take 4% of your Maximum Life per second as Physical Damage"
+            },
+            {
+              "description": "You take 4% of your Maximum Energy Shield per second as Physical Damage"
+            },
+            {
+              "description": "25% chance to gain a Frenzy Charge on Kill"
+            }
+          ],
+          "descrText": "Place into an item socket to gain this skill. Right click to remove from a socket.",
+          "frameType": 4,
+          "frameTypeId": "Gem",
+          "socket": 3,
+          "colour": "D"
+        }
+      ]
+    },
+    {
+      "verified": false,
+      "w": 1,
+      "h": 1,
+      "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9TaGFwZXJzUHJlc2VuY2UiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/57d45e4009/ShapersPresence.png",
+      "league": "Covens",
+      "id": "0a080c11fc574cab104e936bd1e6965e10b9c0c8705265134ea2629b75577125",
+      "influences": {
+        "shaper": true
+      },
+      "shaper": true,
+      "name": "Solstice Vigil",
+      "typeLine": "Onyx Amulet",
+      "baseType": "Onyx Amulet",
+      "rarity": "Unique",
+      "ilvl": 86,
+      "identified": true,
+      "requirements": [
+        {
+          "name": "Level",
+          "values": [
+            [
+              "64",
+              0
+            ]
+          ],
+          "displayMode": 0,
+          "type": 62
+        }
+      ],
+      "enchantMods": [
+        "Allocates [wand_elemental_notable1662|Prism Weave]"
+      ],
+      "implicitMods": [
+        {
+          "description": "+16 to all Attributes"
+        }
+      ],
+      "explicitMods": [
+        {
+          "description": "32% increased Damage"
+        },
+        {
+          "description": "+64 to maximum Life"
+        },
+        {
+          "description": "Regenerate 8.3 Mana per second"
+        },
+        {
+          "description": "Gain Shaper's Presence for 10 seconds when you kill a Rare or Unique Enemy"
+        },
+        {
+          "description": "Temporal Chains has no Reservation if Cast as an Aura"
+        }
+      ],
+      "flavourText": [
+        "Time, like light, can be refracted into all its myriad colours.\r",
+        "The first shade is beautiful, but the last will drive the unwary insane."
+      ],
+      "frameType": 3,
+      "frameTypeId": "Unique",
+      "x": 0,
+      "y": 0,
+      "inventoryId": "Amulet"
+    }
+  ],
+  "character": {
+    "name": "ExampleCharacter",
+    "realm": "pc",
+    "class": "Warden",
+    "league": "Covens",
+    "level": 100,
+    "lastLoginTime": 1794837171
+  }
+}

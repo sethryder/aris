@@ -1,0 +1,50 @@
+# Daily: if Path of Building has a newer release than pob.json pins, rebuild the engine assets against it,
+# run the tests (including the golden PoB engine test), and open a pull request bumping the pin.
+name: Update Path of Building
+on:
+  schedule:
+    - cron: '17 6 * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+  pull-requests: write
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - id: check
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          latest=$(gh api repos/PathOfBuildingCommunity/PathOfBuilding/releases/latest --jq .tag_name)
+          current=$(node -p "require('./pob.json').pob")
+          echo "latest=$latest" >> "$GITHUB_OUTPUT"
+          if [ "$latest" = "$current" ] || git ls-remote --exit-code origin "refs/heads/pob-$latest" >/dev/null; then
+            echo "update=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "update=true" >> "$GITHUB_OUTPUT"
+          fi
+      - if: steps.check.outputs.update == 'true'
+        run: |
+          node -e "const f='pob.json',p=JSON.parse(require('fs').readFileSync(f));p.pob='${{ steps.check.outputs.latest }}';require('fs').writeFileSync(f,JSON.stringify(p,null,2)+'\n')"
+          npm ci
+          npm run pob
+          npm run typecheck
+          npm test
+      - if: steps.check.outputs.update == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.check.outputs.latest }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "pob-$TAG"
+          git commit -am "Update Path of Building to $TAG"
+          git push origin "pob-$TAG"
+          gh pr create --title "Update Path of Building to $TAG" \
+            --body "Automated: rebuilt the in-browser PoB engine against $TAG; typecheck and tests (including the golden engine test) passed. Release notes: https://github.com/PathOfBuildingCommunity/PathOfBuilding/releases/tag/$TAG"
