@@ -9,6 +9,7 @@ import { NodeLists } from './NodeLists.tsx';
 import { SkillsView } from './SkillsView.tsx';
 import { StatTotals } from './StatTotals.tsx';
 import { TreeView, type FocusRef } from './TreeView.tsx';
+import logo from '../../assets/mark.svg';
 
 const KEYS = ['a', 'b'] as const;
 const TABS = ['Tree', 'Skills', 'Items', 'Calcs'] as const;
@@ -69,7 +70,7 @@ export function App() {
   return (
     <>
       <header>
-        <h1>Aris <span>Path of Exile character compare</span></h1>
+        <h1><img src={logo} alt="" width="28" height="28" /> Aris <span>Path of Exile character compare</span></h1>
         <div class="pickers">
           <BuildPicker id="a" label="You" side={sa} onChange={(p) => patch(0, p)} onLoad={(s) => load(0, s)} />
           <BuildPicker id="b" label="Them" side={sb} onChange={(p) => patch(1, p)} onLoad={(s) => load(1, s)} />

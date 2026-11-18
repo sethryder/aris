@@ -12,7 +12,8 @@
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--text); }
 header, main, footer { max-width: 1200px; margin: 0 auto; padding: 16px; }
-h1 { font-size: 1.3rem; margin: 0 0 12px; } h1 span { color: var(--muted); font-weight: 400; font-size: 0.95rem; margin-left: 8px; }
+h1 { font-size: 1.3rem; margin: 0 0 12px; display: flex; align-items: center; gap: 8px; }
+h1 img { display: block; } h1 span { color: var(--muted); font-weight: 400; font-size: 0.95rem; margin-left: 8px; }
 h3 { font-size: 1.05rem; margin: 20px 0 8px; } h4 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); margin: 12px 0 4px; }
 a { color: var(--b); }
 button, input, select { font: inherit; color: inherit; background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 6px 10px; }
