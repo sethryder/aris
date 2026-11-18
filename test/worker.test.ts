@@ -77,3 +77,33 @@ test('GGG brake: one call short of a window, stop calling GGG for everyone', asy
   expect(fetchMock).toHaveBeenCalledTimes(1);
   vi.useRealTimers();
 });
+
+test('Cloudflare 403 is an outage, not a private profile; brake refusals cost no lookup quota', async () => {
+  let now = Date.now() + 9 * 3600_000;
+  vi.setSystemTime(now);
+  const fetchMock = vi.fn(async () => new Response('<html>challenge</html>', { status: 403, headers: { 'cf-mitigated': 'challenge' } }));
+  vi.stubGlobal('fetch', fetchMock);
+  vi.spyOn(console, 'error').mockImplementation(() => {});
+  const chars = (acct: string) => handler.fetch(new Request(`http://x/poe1/characters?account=${acct}%231234`), env, '5.5.5.5');
+  const r = await chars('Cf');
+  expect(r.status).toBe(429);
+  expect((await r.json()).error).toBe('rate_limited');
+  for (let i = 0; i < 8; i++) expect((await (await chars(`Cf${i}`)).json()).error).toBe('rate_limited');
+  expect(fetchMock).toHaveBeenCalledTimes(1);
+  // Brake lifts: the 8 refused retries must not have used up this client's 6/min.
+  vi.setSystemTime(now += 6 * 60_000);
+  fetchMock.mockImplementation(async () => new Response('[]'));
+  expect((await chars('Cf')).status).toBe(200);
+  vi.useRealTimers();
+});
+
+test('concurrent misses for one key share a single upstream call', async () => {
+  vi.setSystemTime(Date.now() + 12 * 3600_000);
+  const fetchMock = vi.fn(async () => new Response('code'));
+  vi.stubGlobal('fetch', fetchMock);
+  const pob = (ip: string) => handler.fetch(new Request('http://x/pob?url=https://pobb.in/shared1'), env, ip);
+  const rs = await Promise.all(['6.6.6.1', '6.6.6.2', '6.6.6.3'].map(pob));
+  expect(rs.map((r) => r.status)).toEqual([200, 200, 200]);
+  expect(fetchMock).toHaveBeenCalledTimes(1);
+  vi.useRealTimers();
+});

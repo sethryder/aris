@@ -33,12 +33,13 @@ export function App() {
 
   const load = async (i: number, src: Source) => {
     const token = ++tokens.current[i]!;
-    patch(i, { src, loading: true, error: undefined });
+    // Into the hash right away: a side that fails to load stays in the link, so a reload can retry it.
+    patch(i, { src, loading: true, error: undefined, shared: src });
     if (i === 0 && src.kind !== 'acct') store.set(src.kind === 'code' ? src.code : src.url);
     if (i === 0 && src.kind === 'acct') store.set(src.account);
     try {
       const loaded = await loadSource(src);
-      if (token === tokens.current[i]) patch(i, { loading: false, loaded, shared: src });
+      if (token === tokens.current[i]) patch(i, { loading: false, loaded });
     } catch (e) {
       if (token === tokens.current[i]) patch(i, { loading: false, error: errorText(e) });
     }
@@ -53,10 +54,13 @@ export function App() {
     });
   }, []);
 
-  // The URL is the save file: keep it in step with what is loaded.
+  // The URL is the save file: keep it in step with what is loaded. Skip the mount run, which would
+  // erase the incoming hash before the restore above has put it back into state.
   const [sa, sb] = sides;
   const unshareable = [sa, sb].some((s) => s.shared && !toHash(s.shared));
+  const mounted = useRef(false);
   useEffect(() => {
+    if (!mounted.current) { mounted.current = true; return; }
     const q = new URLSearchParams();
     KEYS.forEach((k, i) => { const h = sides[i]!.shared && toHash(sides[i]!.shared!); if (h) q.set(k, h); });
     const hash = q.toString();
@@ -99,7 +103,7 @@ export function App() {
             <div id="panel" role="tabpanel" aria-labelledby={`tab-${tab}`}>
               {tab === 'Tree' && (
                 <>
-                  <TreeView tree={A.tree} a={A.build} b={B.build} diff={d} filter={filter} focusRef={focusRef} />
+                  <TreeView tree={A.tree} treeB={B.tree} a={A.build} b={B.build} diff={d} filter={filter} focusRef={focusRef} />
                   <NodeLists diff={d} a={A.build} b={B.build} treeA={A.tree} treeB={B.tree} filter={filter} onFocus={(id) => focusRef.current?.(id)} />
                   <StatTotals stats={d.treeStats} filter={filter} />
                 </>

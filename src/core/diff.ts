@@ -14,7 +14,10 @@ export function diff(a: Build, b: Build, treeA: TreeData, treeB: TreeData): Buil
     uniq(build.nodes).filter((id) => tree.nodes[id]?.kind !== 'classStart' && tree.nodes[id]?.kind !== 'ascStart');
   const nodesA = real(a, treeA), nodesB = real(b, treeB);
   const n = split(nodesA, nodesB);
-  const changed = n.both.filter((id) => nodeStats(a, treeA, id).join('\n') !== nodeStats(b, treeB, id).join('\n'));
+  // A different *choice* (mastery effect, tattoo), not node text: the trees may be different versions,
+  // and a node GGG rebalanced between them is not something either player chose.
+  const choice = (build: Build, id: number) => build.nodeOverrides[id]?.stats.join('\n') ?? String(build.masteries[id] ?? '');
+  const changed = n.both.filter((id) => choice(a, id) !== choice(b, id));
 
   return {
     nodes: { ...n, changed },

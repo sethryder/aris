@@ -4,18 +4,19 @@ import { decodePob } from '../core/pob.ts';
 import type { Build, GameId, TreeData } from '../core/types.ts';
 import type { CalcInput } from '../pob/engine.ts';
 import { games } from '../games/index.ts';
+import { ACCOUNT } from '../core/account.ts';
 
 export type Source =
   | { kind: 'acct'; account: string; name?: string }
   | { kind: 'link'; url: string }
   | { kind: 'code'; code: string };
 
-const ACCOUNT = /^[^\s#/]{1,40}#\d{4}$/;
+const decode = (s: string) => { try { return decodeURIComponent(s); } catch { return s; } }; // malformed % escapes
 
 export function parseInput(raw: string): Source {
   const s = raw.trim();
   const profile = s.match(/pathofexile\.com\/account\/view-profile\/([^/?#]+)-(\d{4})(?:\/characters\?characterName=([^&#]+))?/i);
-  if (profile) return { kind: 'acct', account: `${decodeURIComponent(profile[1]!)}#${profile[2]}`, name: profile[3] && decodeURIComponent(profile[3]) };
+  if (profile) return { kind: 'acct', account: `${decode(profile[1]!)}#${profile[2]}`, name: profile[3] && decode(profile[3]) };
   if (/^https?:\/\//i.test(s)) return { kind: 'link', url: s };
   if (ACCOUNT.test(s)) return { kind: 'acct', account: s };
   return { kind: 'code', code: s };

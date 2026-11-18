@@ -29,10 +29,14 @@ export async function startEngine(fetchBytes: (path: string) => Promise<Uint8Arr
     FS.writeFile(path, data);
   };
 
-  const mounted = new Set<string>();
-  const mount = async (name: string) => {
-    if (mounted.has(name)) return;
-    mounted.add(name);
+  // One promise per file: concurrent calcs wait for the same fetch, and a failed fetch is forgotten so the next calc retries.
+  const mounted = new Map<string, Promise<void>>();
+  const once = (name: string, fn: () => Promise<void>) => {
+    let p = mounted.get(name);
+    if (!p) { p = fn(); mounted.set(name, p); p.catch(() => mounted.delete(name)); }
+    return p;
+  };
+  const mount = (name: string) => once(name, async () => {
     const gz = await fetchBytes(name);
     const raw = new Uint8Array(await new Response(new Response(gz as BlobPart).body!.pipeThrough(new DecompressionStream('gzip'))).arrayBuffer());
     const nl = raw.indexOf(10);
@@ -41,7 +45,7 @@ export async function startEngine(fetchBytes: (path: string) => Promise<Uint8Arr
       write(`/pob/${path}`, raw.subarray(off, off + size));
       off += size;
     }
-  };
+  });
 
   await Promise.all([mount('core.pack'), mount(`tree/${manifest.latest}.pack`)]);
   FS.chdir('/pob/src');
@@ -58,10 +62,9 @@ export async function startEngine(fetchBytes: (path: string) => Promise<Uint8Arr
       // jewels whose file name doesn't match their item name stay unloaded, and PoB says "Missing LUT".
       const squashed = text.replace(/[\s']/g, '');
       await Promise.all(Object.entries(manifest.timeless).filter(([jewel]) => squashed.includes(jewel)).flatMap(([, files]) =>
-        files.filter((f) => !mounted.has(f)).map(async (f) => {
-          mounted.add(f);
+        files.map((f) => once(`timeless/${f}`, async () => {
           write(`/pob/src/Data/TimelessJewelData/${f}`, await fetchBytes(`timeless/${f}`));
-        })));
+        }))));
       write('/in', new TextEncoder().encode(text));
       return JSON.parse(run(`return Aris.${'xml' in input ? 'calcXml' : 'calcApi'}('/in')`)) as CalcResult;
     },

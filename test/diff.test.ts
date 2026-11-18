@@ -64,3 +64,11 @@ test('stats helpers', () => {
   expect([...sumStats(['+10 to Strength', '+5 to Strength'])]).toEqual([['+# to Strength', [15]]]);
   expect(matches(' BLOCK', '+6% Chance to Block')).toBe(true);
 });
+
+test('across tree versions, rebalanced node text is not a "different choice"; a mastery pick is', () => {
+  const treeB: TreeData = structuredClone(tree);
+  treeB.version = '3_29';
+  treeB.nodes[2]!.stats = ['+8 to Strength'];
+  const them: Build = { ...structuredClone(base), treeVersion: '3_29', masteries: { 5: 200 } };
+  expect(diff(base, them, tree, treeB).nodes.changed).toEqual([5]);
+});

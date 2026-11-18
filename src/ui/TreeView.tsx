@@ -5,14 +5,15 @@ import type { Build, BuildDiff, TreeData, TreeNode } from '../core/types.ts';
 
 export type FocusRef = { current: ((id: number) => void) | null };
 
-interface Props { tree: TreeData; a: Build; b: Build; diff: BuildDiff; filter: string; focusRef?: FocusRef }
+/** Drawn on `tree` (A's version); `treeB` supplies B's node text when B is on another version. */
+interface Props { tree: TreeData; treeB?: TreeData; a: Build; b: Build; diff: BuildDiff; filter: string; focusRef?: FocusRef }
 
 const RADIUS: Record<TreeNode['kind'], number> = { keystone: 60, notable: 42, jewel: 42, mastery: 36, classStart: 80, ascStart: 30, normal: 24 };
 const PAD = 300;
 
 type View = { x: number; y: number; k: number };
 
-export function TreeView({ tree, a, b, diff, filter, focusRef }: Props) {
+export function TreeView({ tree, treeB = tree, a, b, diff, filter, focusRef }: Props) {
   const svgRef = useRef<SVGSVGElement>(null);
   const gRef = useRef<SVGGElement>(null);
   const view = useRef<View>({ x: 0, y: 0, k: 1 });
@@ -51,8 +52,8 @@ export function TreeView({ tree, a, b, diff, filter, focusRef }: Props) {
   const ringed = useMemo(() => {
     if (!filter.trim()) return [];
     return Object.values(tree.nodes).filter((n) => drawing.shown(n) && n.kind !== 'classStart'
-      && [n.name, ...nodeStats(a, tree, n.id), ...nodeStats(b, tree, n.id), ...n.stats].some((t) => matches(filter, t)));
-  }, [tree, a, b, filter, drawing]);
+      && [n.name, ...nodeStats(a, tree, n.id), ...nodeStats(b, treeB, n.id), ...n.stats].some((t) => matches(filter, t)));
+  }, [tree, treeB, a, b, filter, drawing]);
 
   const apply = () => {
     const { x, y, k } = view.current;
@@ -148,6 +149,7 @@ export function TreeView({ tree, a, b, diff, filter, focusRef }: Props) {
   };
 
   const { bounds: bb } = tree;
+  const offTree = diff.nodes.onlyB.filter((id) => !tree.nodes[id]).length;
   const summary = `Passive tree: ${diff.nodes.onlyB.length} nodes only they have, ${diff.nodes.onlyA.length} only you have, ${diff.nodes.changed.length} with a different choice. The lists below have the same information.`;
   return (
     <div class="tree">
@@ -168,17 +170,18 @@ export function TreeView({ tree, a, b, diff, filter, focusRef }: Props) {
           <g class="rings">{ringed.map((n) => <circle key={n.id} cx={n.x} cy={n.y} r={RADIUS[n.kind] + 40} />)}</g>
         </g>
       </svg>
-      {tip && <Tooltip {...tip} tree={tree} a={a} b={b} state={state.get(tip.id)} />}
+      {offTree > 0 && <p class="note">{offTree} of their nodes aren't on your tree version ({tree.version}), so they're only in the lists below.</p>}
+      {tip && <Tooltip {...tip} tree={tree} treeB={treeB} a={a} b={b} state={state.get(tip.id)} />}
     </div>
   );
 }
 
 const SIDE: Record<string, string> = { a: 'You have, they don\'t', b: 'They have, you don\'t', both: 'Both have', changed: 'Both have, different choice' };
 
-function Tooltip({ id, x, y, tree, a, b, state }: { id: number; x: number; y: number; tree: TreeData; a: Build; b: Build; state?: string }) {
+function Tooltip({ id, x, y, tree, treeB, a, b, state }: { id: number; x: number; y: number; tree: TreeData; treeB: TreeData; a: Build; b: Build; state?: string }) {
   const n = tree.nodes[id];
   if (!n) return null;
-  const sa = nodeStats(a, tree, id), sb = nodeStats(b, tree, id);
+  const sa = nodeStats(a, tree, id), sb = nodeStats(b, treeB, id);
   const mastery = n.kind === 'mastery';
   return (
     <div class="tooltip" style={{ left: x + 14, top: y + 14 }}>

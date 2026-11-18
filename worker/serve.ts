@@ -9,10 +9,16 @@ const trustProxy = process.env.TRUST_PROXY === '1';
 if (!env.CONTACT) throw new Error('Set CONTACT (goes into the User-Agent GGG sees)');
 
 createServer(async (req, res) => {
-  const r = await handler.fetch(
-    new Request(`http://localhost${req.url}`, { method: req.method, headers: { Origin: req.headers.origin ?? '' } }), env,
-    // Rightmost entry is the one our own reverse proxy added; anything left of it is client-supplied.
-    (trustProxy && String(req.headers['x-forwarded-for'] ?? '').split(',').pop()?.trim()) || req.socket.remoteAddress || 'unknown');
-  res.writeHead(r.status, Object.fromEntries(r.headers));
-  res.end(await r.text());
+  try {
+    const r = await handler.fetch(
+      new Request(`http://localhost${req.url}`, { method: req.method, headers: { Origin: req.headers.origin ?? '' } }), env,
+      // Rightmost entry is the one our own reverse proxy added; anything left of it is client-supplied.
+      (trustProxy && String(req.headers['x-forwarded-for'] ?? '').split(',').pop()?.trim()) || req.socket.remoteAddress || 'unknown');
+    res.writeHead(r.status, Object.fromEntries(r.headers));
+    res.end(await r.text());
+  } catch (e) {
+    console.error(e);
+    if (!res.headersSent) res.writeHead(500);
+    res.end();
+  }
 }).listen(Number(process.env.PORT ?? 8787), process.env.HOST ?? '127.0.0.1');
