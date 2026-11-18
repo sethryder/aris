@@ -67,6 +67,11 @@ export function App() {
   const sameGame = A && B && A.build.game === B.build.game;
   const d = useMemo(() => (A && B && sameGame ? diff(A.build, B.build, A.tree, B.tree) : null), [A, B, sameGame]);
 
+  // Name the comparison in the tab and browser history once both sides are loaded.
+  useEffect(() => {
+    document.title = A && B ? `${A.build.label} vs ${B.build.label} · Aris` : 'Aris: Compare Path of Exile Characters and Builds';
+  }, [A, B]);
+
   return (
     <>
       <header>

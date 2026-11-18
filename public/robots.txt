@@ -1,0 +1,6 @@
+User-agent: *
+# Tree data and the Path of Building engine files are large and not useful in search results.
+Disallow: /data/
+Disallow: /pob/
+
+Sitemap: https://aris.washclof.com/sitemap.xml
