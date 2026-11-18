@@ -72,7 +72,9 @@ export async function loadSource(src: Source): Promise<Loaded> {
     const [raw, tree] = await Promise.all([getCharacter(src.account, src.name!), loadTree('poe1', game.latestTreeVersion)]);
     const build = game.fromAccount!(raw, tree);
     build.label = `${build.label} (${src.account})`;
-    return { build, tree, calc: raw };
+    // GGG returns old or stripped characters (often Standard and race characters) with no passives or gear at all.
+    const empty = build.nodes.length === 0 && build.items.length === 0;
+    return { build, tree, calc: raw, ...(empty && { warning: "Path of Exile returned this character with no passives or items, so there's nothing to compare. It may be an old or stripped character." }) };
   }
   const code = src.kind === 'link' ? await getPobCode(src.url) : src.code;
   const { game, doc } = await decodePob(code);
