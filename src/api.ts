@@ -1,5 +1,5 @@
 // Client for the proxy (worker/index.ts).
-const BASE = (import.meta.env.VITE_PROXY_URL as string | undefined) ?? 'http://localhost:8787';
+const BASE = (import.meta.env.VITE_PROXY_URL as string | undefined) || 'http://localhost:8787'; // unset or empty → local proxy
 
 export type ApiCode = 'unreachable' | 'private_or_missing' | 'rate_limited' | 'unsupported_link' | 'not_found' | 'bad_account' | string;
 export class ApiError extends Error {
