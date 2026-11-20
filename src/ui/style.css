@@ -58,6 +58,7 @@ code { background: var(--panel); padding: 1px 5px; border-radius: 4px; }
 .nodes circle.flash { animation: flash 1.2s ease-out 2; }
 @keyframes flash { 0% { stroke: #fff; stroke-width: 40; } 100% { stroke-width: 6; } }
 .rings circle { fill: none; stroke: var(--ring); stroke-width: 14; pointer-events: none; }
+.rings circle.hover { stroke: #fff; }
 .tooltip { position: absolute; z-index: 3; max-width: 340px; background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px; font-size: 0.85rem; pointer-events: none; }
 .tooltip .side { color: var(--muted); margin-bottom: 4px; } .tooltip .side.a, .tooltip .who.a { color: var(--a); } .tooltip .side.b, .tooltip .who.b { color: var(--b); } .tooltip .side.changed { color: var(--changed); }
 

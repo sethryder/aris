@@ -17,7 +17,7 @@ export function TreeView({ tree, treeB = tree, a, b, diff, filter, focusRef }: P
   const svgRef = useRef<SVGSVGElement>(null);
   const gRef = useRef<SVGGElement>(null);
   const view = useRef<View>({ x: 0, y: 0, k: 1 });
-  const [tip, setTip] = useState<{ id: number; x: number; y: number } | null>(null);
+  const [tip, setTip] = useState<{ id: number; x: number; y: number; px: number } | null>(null);
 
   const state = useMemo(() => {
     const s = new Map<number, string>();
@@ -43,10 +43,11 @@ export function TreeView({ tree, treeB = tree, a, b, diff, filter, focusRef }: P
       const cross = (p.x - e.arc.cx) * (q.y - e.arc.cy) - (p.y - e.arc.cy) * (q.x - e.arc.cx);
       return <path key={i} class={cls} d={`M${p.x} ${p.y}A${e.arc.r} ${e.arc.r} 0 0 ${cross > 0 ? 1 : 0} ${q.x} ${q.y}`} />;
     });
-    const nodes = Object.values(tree.nodes).filter(shown).map((n) => (
+    const list = Object.values(tree.nodes).filter(shown);
+    const nodes = list.map((n) => (
       <circle key={n.id} data-id={n.id} class={`${n.kind} ${state.get(n.id) ?? ''}`} cx={n.x} cy={n.y} r={RADIUS[n.kind]} />
     ));
-    return { edges, nodes, shown };
+    return { edges, nodes, list, shown };
   }, [tree, a, b, state]);
 
   const ringed = useMemo(() => {
@@ -93,10 +94,7 @@ export function TreeView({ tree, treeB = tree, a, b, diff, filter, focusRef }: P
   // Pan (one pointer) and pinch (two pointers) by transforming the one <g>; wheel zooms around the cursor.
   useEffect(() => {
     const svg = svgRef.current!;
-    const toSvg = (cx: number, cy: number) => {
-      const m = svg.getScreenCTM()!.inverse();
-      return { x: m.a * cx + m.c * cy + m.e, y: m.b * cx + m.d * cy + m.f };
-    };
+    const toSvg = (cx: number, cy: number) => svgPoint(svg, cx, cy);
     const zoomAt = (p: { x: number; y: number }, factor: number) => {
       const v = view.current, k = Math.min(Math.max(v.k * factor, 0.5), 20);
       view.current = { k, x: p.x - ((p.x - v.x) * k) / v.k, y: p.y - ((p.y - v.y) * k) / v.k };
@@ -142,11 +140,23 @@ export function TreeView({ tree, treeB = tree, a, b, diff, filter, focusRef }: P
     };
   }, []);
 
-  const over = (e: PointerEvent) => {
-    const id = Number((e.target as Element).getAttribute?.('data-id'));
-    const box = svgRef.current!.parentElement!.getBoundingClientRect();
-    setTip(id ? { id, x: e.clientX - box.left, y: e.clientY - box.top } : null);
+  // Hover snaps to the nearest node edge within a few screen pixels: zoomed out, nodes are too small to hit exactly.
+  const hover = (e: PointerEvent) => {
+    if (e.buttons) return;
+    const svg = svgRef.current!, { x: vx, y: vy, k } = view.current;
+    const p = svgPoint(svg, e.clientX, e.clientY), tx = (p.x - vx) / k, ty = (p.y - vy) / k;
+    const px = 1 / (svg.getScreenCTM()!.a * k); // one screen pixel, in tree units
+    let best = 0, bd = 10 * px;
+    // ponytail: linear scan of ~3k nodes per move is well under a millisecond; grid index if that changes.
+    for (const n of drawing.list) {
+      const d = Math.hypot(n.x - tx, n.y - ty) - RADIUS[n.kind];
+      if (d < bd) { bd = d; best = n.id; }
+    }
+    if (best === (tip?.id ?? 0)) return;
+    const box = svg.parentElement!.getBoundingClientRect();
+    setTip(best ? { id: best, x: e.clientX - box.left, y: e.clientY - box.top, px } : null);
   };
+  const hovered = tip && tree.nodes[tip.id];
 
   const { bounds: bb } = tree;
   const offTree = diff.nodes.onlyB.filter((id) => !tree.nodes[id]).length;
@@ -163,17 +173,23 @@ export function TreeView({ tree, treeB = tree, a, b, diff, filter, focusRef }: P
       </div>
       <svg ref={svgRef} role="img" aria-label={summary}
         viewBox={`${bb.minX - PAD} ${bb.minY - PAD} ${bb.maxX - bb.minX + 2 * PAD} ${bb.maxY - bb.minY + 2 * PAD}`}
-        onPointerOver={over} onPointerLeave={() => setTip(null)}>
+        onPointerMove={hover} onPointerLeave={() => setTip(null)}>
         <g ref={gRef}>
           <g class="edges">{drawing.edges}</g>
           <g class="nodes">{drawing.nodes}</g>
-          <g class="rings">{ringed.map((n) => <circle key={n.id} cx={n.x} cy={n.y} r={RADIUS[n.kind] + 40} />)}</g>
+          <g class="rings">{ringed.map((n) => <circle key={n.id} cx={n.x} cy={n.y} r={RADIUS[n.kind] + 40} />)}
+            {hovered && <circle class="hover" cx={hovered.x} cy={hovered.y} r={RADIUS[hovered.kind] + 6 * tip.px} stroke-width={2 * tip.px} />}</g>
         </g>
       </svg>
       {offTree > 0 && <p class="note">{offTree} of their nodes aren't on your tree version ({tree.version}), so they're only in the lists below.</p>}
       {tip && <Tooltip {...tip} tree={tree} treeB={treeB} a={a} b={b} state={state.get(tip.id)} />}
     </div>
   );
+}
+
+function svgPoint(svg: SVGSVGElement, cx: number, cy: number) {
+  const m = svg.getScreenCTM()!.inverse();
+  return { x: m.a * cx + m.c * cy + m.e, y: m.b * cx + m.d * cy + m.f };
 }
 
 const SIDE: Record<string, string> = { a: 'You have, they don\'t', b: 'They have, you don\'t', both: 'Both have', changed: 'Both have, different choice' };
@@ -184,7 +200,7 @@ function Tooltip({ id, x, y, tree, treeB, a, b, state }: { id: number; x: number
   const sa = nodeStats(a, tree, id), sb = nodeStats(b, treeB, id);
   const mastery = n.kind === 'mastery';
   return (
-    <div class="tooltip" style={{ left: x + 14, top: y + 14 }}>
+    <div class="tooltip" style={{ left: `${x + 14}px`, top: `${y + 14}px` }}>
       <strong>{a.nodeOverrides[id]?.name ?? b.nodeOverrides[id]?.name ?? n.name}</strong>
       {state && <div class={`side ${state}`}>{SIDE[state]}</div>}
       {state === 'changed' || (mastery && state === 'both') ? (
