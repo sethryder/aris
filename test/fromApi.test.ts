@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { expect, test } from 'vitest';
 import { poe1 } from '../src/games/poe1/index.ts';
 import { tradeUrl } from '../src/games/poe1/trade.ts';
+import { jewelLabel } from '../src/ui/ItemsView.tsx';
 import type { TreeData } from '../src/core/types.ts';
 
 const json = (f: string) => JSON.parse(readFileSync(f, 'utf8'));
@@ -24,4 +25,10 @@ test('fromAccount on the saved fixtures', () => {
   expect(b.clusterNotables).toContain('Magnifier');
   expect(b.items.filter((i) => i.slot.startsWith('Jewel ')).length).toBe(6);
   expect(b.items.flatMap((i) => i.mods).filter((m) => /[[|]/.test(m.text))).toEqual([]);
+});
+
+test('jewelLabel names tree sockets by the nearest notable', () => {
+  expect(jewelLabel('Jewel 26196', [tree])).toMatch(/^Jewel near \S/);
+  expect(jewelLabel('Jewel 10532', [tree])).toBe('Jewel in a cluster jewel');
+  expect(jewelLabel('Helmet', [tree])).toBe('Helmet');
 });

@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'preact/hooks';
+import { useEffect, useMemo, useState } from 'preact/hooks';
 import { matches } from '../core/diff.ts';
 import { tradeUrl, type TradeStats } from '../games/poe1/trade.ts';
-import type { Item, Mod, SlotDiff } from '../core/types.ts';
+import type { Item, Mod, SlotDiff, TreeData } from '../core/types.ts';
 
 const itemName = (i?: Item) => (i ? [i.name, i.base].filter(Boolean).join(', ') : 'empty');
 const tag = (m: Mod) => [m.kind !== 'explicit' && m.kind, ...m.flags].filter(Boolean).join(', ');
@@ -9,11 +9,29 @@ const tag = (m: Mod) => [m.kind !== 'explicit' && m.kind, ...m.flags].filter(Boo
 let statsP: Promise<TradeStats | undefined> | undefined;
 const loadStats = () => (statsP ??= fetch(`${import.meta.env.BASE_URL}data/poe1/trade-stats.json`).then((r) => (r.ok ? r.json() : undefined), () => undefined));
 
+/** "Jewel 26196" → "Jewel near Overcharge". Socket ids missing from the tree sit inside cluster jewels. */
+export function jewelLabel(slot: string, trees: TreeData[]) {
+  const id = Number(slot.match(/^Jewel (\d+)$/)?.[1]);
+  if (!id) return slot;
+  for (const t of trees) {
+    const s = t.nodes[id];
+    if (!s) continue;
+    let best = '', d = Infinity;
+    for (const n of Object.values(t.nodes)) {
+      const dn = (n.x - s.x) ** 2 + (n.y - s.y) ** 2;
+      if ((n.kind === 'notable' || n.kind === 'keystone') && !n.ascendancy && dn < d) { best = n.name; d = dn; }
+    }
+    return `Jewel near ${best}`;
+  }
+  return 'Jewel in a cluster jewel';
+}
+
 const ModLine = ({ m }: { m: Mod }) => <>{m.text}{tag(m) && <span class="tag"> {tag(m)}</span>}</>;
 
-export function ItemsView({ items, slotOrder, filter, league }: { items: SlotDiff[]; slotOrder: string[]; filter: string; league: string }) {
+export function ItemsView({ items, slotOrder, filter, league, trees }: { items: SlotDiff[]; slotOrder: string[]; filter: string; league: string; trees: TreeData[] }) {
   const [stats, setStats] = useState<TradeStats>();
   useEffect(() => { loadStats().then(setStats); }, []);
+  const labels = useMemo(() => new Map(items.map((s) => [s.slot, jewelLabel(s.slot, trees)])), [items, ...trees]);
   const rank = (slot: string) => {
     const base = slot.replace(/ Abyssal Socket \d+$/, '');
     const i = slotOrder.indexOf(base);
@@ -21,7 +39,7 @@ export function ItemsView({ items, slotOrder, filter, league }: { items: SlotDif
   };
   const f = filter.trim();
   const shown = [...items].sort((x, y) => rank(x.slot) - rank(y.slot) || x.slot.localeCompare(y.slot)).flatMap((s) => {
-    if (!f || [itemName(s.a), itemName(s.b), s.slot].some((t) => matches(f, t))) return [s];
+    if (!f || [itemName(s.a), itemName(s.b), labels.get(s.slot)!].some((t) => matches(f, t))) return [s];
     const m = (x: Mod) => matches(f, x.text);
     const t = { ...s, onlyA: s.onlyA.filter(m), onlyB: s.onlyB.filter(m), changed: s.changed.filter((c) => m(c.a) || m(c.b)), same: s.same.filter(m) };
     return t.onlyA.length + t.onlyB.length + t.changed.length + t.same.length ? [t] : [];
@@ -31,7 +49,7 @@ export function ItemsView({ items, slotOrder, filter, league }: { items: SlotDif
     <div class="items">
       {shown.map((s) => (
         <section class="slot">
-          <h3>{s.slot}</h3>
+          <h3>{labels.get(s.slot)}</h3>
           <div class="pair">
             <div class="a"><span class="who">You</span> {itemName(s.a)}</div>
             <div class="b"><span class="who">Them</span> {itemName(s.b)}{s.b?.base && <> <a class="trade" href={tradeUrl(s.b, league, stats)} target="_blank" rel="noopener"
