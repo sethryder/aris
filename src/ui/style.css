@@ -72,8 +72,10 @@ table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
 th, td { text-align: left; padding: 4px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
 .slot { border: 1px solid var(--line); border-radius: 8px; padding: 4px 12px 10px; margin-bottom: 12px; }
 .slot h3 { margin-top: 8px; }
+.items h2.group { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin: 24px 0 8px; } .items h2.group:first-child { margin-top: 4px; }
+.trade { font-size: 12px; margin-left: 6px; }
 .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.tag { color: var(--muted); font-size: 0.8rem; }
+.tag { color: var(--muted); font-size: 0.8rem; } .tag.corrupted { color: #e06c6c; }
 details summary { cursor: pointer; color: var(--muted); margin-top: 8px; }
 .check { display: inline-flex; gap: 6px; align-items: center; color: var(--muted); font-size: 0.9rem; }
 .check input { width: auto; }

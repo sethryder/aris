@@ -33,4 +33,6 @@ export const getCharacters = async (account: string) =>
 export const getCharacter = async (account: string, name: string) =>
   (await (await get(`/poe1/character?account=${encodeURIComponent(account)}&name=${encodeURIComponent(name)}`)).json()) as { passives: unknown; items: unknown };
 
+export const getCurrentLeague = async () => ((await (await get('/poe1/league')).json()) as { league: string }).league;
+
 export const getPobCode = async (url: string) => (await get(`/pob?url=${encodeURIComponent(url)}`)).text();

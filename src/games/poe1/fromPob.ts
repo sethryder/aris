@@ -120,7 +120,7 @@ export function parseItem(slot: string, raw: string): Item {
       flags: enchant ? flags.filter((f) => f !== 'crafted') : flags,
     });
   });
-  return { slot, name, base, rarity, mods };
+  return { slot, name, base, rarity, ...(lines.includes('Corrupted') && { corrupted: true }), mods };
 }
 
 /** `(a-b)` → `a + r·(b−a)`, rounded to the bounds' decimal precision. PoB defaults r to 0.5. */

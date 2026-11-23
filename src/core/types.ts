@@ -8,6 +8,7 @@ export interface Build {
   className: string;              // base class, e.g. "Templar"
   ascendancy: string | null;
   level: number;
+  league?: string;                // account builds only; PoB codes don't record it
   treeVersion: string;            // PoB style: "3_30", "3_30_ruthless"
   /** Allocated node ids that exist in TreeData.nodes. Excludes class-start and
    *  ascendancy-start nodes and all cluster jewel nodes. */
@@ -24,6 +25,7 @@ export interface Item {
   name: string;                   // "" for normal and magic items
   base: string;
   rarity: string;                 // lower case: normal | magic | rare | unique | relic
+  corrupted?: true;
   mods: Mod[];
 }
 export interface Mod {

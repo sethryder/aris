@@ -94,6 +94,24 @@ async function route(url: URL, env: Env, ip: string): Promise<Cached> {
       return { body: `{"passives":${passives},"items":${items}}`, type: 'application/json' };
     }, true);
   }
+  if (url.pathname === '/poe1/league') {
+    // The current challenge league: GGG lists it first today; skip permanent ones in case that changes. Between leagues
+    // there is none, so Standard. Trade links use it when neither build says its league.
+    return cached('league', 6 * 60 * MIN, ip, async () => {
+      gggOpen();
+      const res = await fetch('https://www.pathofexile.com/api/trade/data/leagues', { headers: { 'User-Agent': ua(env), Accept: 'application/json' } });
+      throttled(res);
+      if (res.status === 403) {   // no private accounts here: a 403 is Cloudflare blocking our egress IP
+        gggBlockedUntil = Math.max(gggBlockedUntil, Date.now() + 5 * MIN);
+        throw new HttpError(429, 'rate_limited', 300);
+      }
+      if (!res.ok) throw new HttpError(502, 'upstream_error');
+      const pc = (JSON.parse(await readCapped(res)) as { result: { id: string; realm: string }[] }).result.filter((l) => l.realm === 'pc').map((l) => l.id);
+      const league = pc.find((id) => !/^(Standard|Hardcore|Ruthless|Hardcore Ruthless)$/.test(id)) ?? pc[0];
+      if (!league) throw new HttpError(502, 'upstream_error');
+      return { body: JSON.stringify({ league }), type: 'application/json' };
+    }, true);
+  }
   if (url.pathname === '/pob') {
     const upstream = buildSiteUrl(q.get('url'));
     if (!upstream) throw new HttpError(400, 'unsupported_link');
@@ -130,12 +148,7 @@ async function ggg(endpoint: string, account: string, character: string | null, 
   gggOpen();
   const params = `accountName=${encodeURIComponent(account)}${character === null ? '' : `&character=${encodeURIComponent(character)}`}&realm=pc`;
   const res = await fetch(`${GGG}/${endpoint}?${params}`, { headers: { 'User-Agent': ua(env), Accept: 'application/json' } });
-  brake(res);
-  if (res.status === 429) {
-    const retry = Number(res.headers.get('Retry-After')) || 60;
-    gggBlockedUntil = Date.now() + retry * 1000;
-    throw new HttpError(429, 'rate_limited', retry);
-  }
+  throttled(res);
   if (res.status === 403) {
     const body = await readCapped(res).catch(() => '');
     // Cloudflare in front of GGG: a challenge or block page means our egress IP is in trouble, not the profile.
@@ -152,6 +165,15 @@ async function ggg(endpoint: string, account: string, character: string | null, 
   const body = await readCapped(res);
   if (body.trim() === 'false') throw new HttpError(404, 'private_or_missing');
   return body;
+}
+
+/** Apply GGG's rate-limit headers to the shared brake; on a 429, close it for Retry-After and throw. */
+function throttled(res: Response) {
+  brake(res);
+  if (res.status !== 429) return;
+  const retry = Number(res.headers.get('Retry-After')) || 60;
+  gggBlockedUntil = Date.now() + retry * 1000;
+  throw new HttpError(429, 'rate_limited', retry);
 }
 
 /** Stop one call short of any GGG window (`x-rate-limit-ip` "max:period:lockout", state "hits:period:…"). */
