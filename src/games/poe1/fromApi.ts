@@ -7,7 +7,7 @@ import { apiSlot } from './slots.ts';
 
 type RawMod = string | { description: string; flags?: Record<string, boolean> };
 interface RawItem {
-  inventoryId: string; x?: number; name?: string; typeLine: string; baseType?: string; rarity?: string;
+  inventoryId: string; x?: number; name?: string; typeLine: string; baseType?: string; rarity?: string; corrupted?: boolean;
   enchantMods?: RawMod[]; implicitMods?: RawMod[]; explicitMods?: RawMod[];
   sockets?: { group: number }[];
   socketedItems?: (RawItem & { socket: number; support?: boolean; abyssJewel?: boolean; properties?: { name: string; values: [string, number][] }[] })[];
@@ -31,6 +31,7 @@ const toItem = (slot: string, i: RawItem): Item => ({
   name: stripMarkup(i.name ?? ''),
   base: stripMarkup(i.baseType ?? i.typeLine),
   rarity: (i.rarity ?? 'normal').toLowerCase(),
+  ...(i.corrupted && { corrupted: true }),
   mods: [...mods(i.enchantMods, 'enchant'), ...mods(i.implicitMods, 'implicit'), ...mods(i.explicitMods, 'explicit')],
 });
 

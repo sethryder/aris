@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { expect, test } from 'vitest';
 import { poe1 } from '../src/games/poe1/index.ts';
+import { parseItem } from '../src/games/poe1/fromPob.ts';
 import { tradeUrl } from '../src/games/poe1/trade.ts';
 import { jewelLabel } from '../src/ui/ItemsView.tsx';
 import type { TreeData } from '../src/core/types.ts';
@@ -31,4 +32,12 @@ test('jewelLabel names tree sockets by the nearest notable', () => {
   expect(jewelLabel('Jewel 26196', [tree])).toMatch(/^Jewel near \S/);
   expect(jewelLabel('Jewel 10532', [tree])).toBe('Jewel in a cluster jewel');
   expect(jewelLabel('Helmet', [tree])).toBe('Helmet');
+});
+
+test('corrupted gear is flagged', () => {
+  const items = json('test/fixtures/poe1/api-get-items.json');
+  items.items[0].corrupted = true;
+  const b = poe1.fromAccount!({ passives: json('test/fixtures/poe1/api-get-passive-skills.json'), items }, tree);
+  expect(b.items.filter((i) => i.corrupted).map((i) => i.base)).toEqual([items.items[0].baseType ?? items.items[0].typeLine]);
+  expect(parseItem('Ring 1', 'Rarity: UNIQUE\nCall of the Brotherhood\nTwo-Stone Ring\nImplicits: 0\nCorrupted').corrupted).toBe(true);
 });

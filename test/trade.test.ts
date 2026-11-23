@@ -28,3 +28,13 @@ test('tradeUrl searches rares by base and mods', () => {
   expect(q).toMatchObject({ type: 'Two-Stone Ring', stats: [{ type: 'and', filters: [{ id: id('explicit', '+# to maximum Life'), value: { min: 63 } }] }] });
   expect(q).not.toHaveProperty('name');
 });
+
+test('corrupted uniques search corrupted copies with the same implicits', () => {
+  const gloves = { slot: 'Gloves', name: 'Command of the Pit', base: 'Riveted Gloves', rarity: 'unique', corrupted: true as const,
+    mods: [mod('Curse Enemies with Temporal Chains on Hit', 'implicit'), mod('7% increased Cast Speed')] };
+  const q = JSON.parse(new URL(tradeUrl(gloves, 'Settlers', stats)).searchParams.get('q')!).query;
+  expect(q).toMatchObject({ name: 'Command of the Pit', filters: { misc_filters: { filters: { corrupted: { option: 'true' } } } } });
+  expect(q.stats[0].filters).toEqual([{ id: id('implicit', 'Curse Enemies with Temporal Chains on Hit') }]);
+  const plain = JSON.parse(new URL(tradeUrl({ ...gloves, corrupted: undefined }, 'Settlers', stats)).searchParams.get('q')!).query;
+  expect(plain).not.toHaveProperty('stats');
+});

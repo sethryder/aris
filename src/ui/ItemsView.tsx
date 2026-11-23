@@ -4,6 +4,7 @@ import { tradeUrl, type TradeStats } from '../games/poe1/trade.ts';
 import type { Item, Mod, SlotDiff, TreeData } from '../core/types.ts';
 
 const itemName = (i?: Item) => (i ? [i.name, i.base].filter(Boolean).join(', ') : 'empty');
+const ItemName = ({ i }: { i?: Item }) => <>{itemName(i)}{i?.corrupted && <span class="tag corrupted"> corrupted</span>}</>;
 const tag = (m: Mod) => [m.kind !== 'explicit' && m.kind, ...m.flags].filter(Boolean).join(', ');
 // ponytail: fetched once per page load; links fall back to name/base search until it arrives or if it fails.
 let statsP: Promise<TradeStats | undefined> | undefined;
@@ -56,9 +57,9 @@ export function ItemsView({ items, slotOrder, filter, league, trees }: { items: 
         <section class="slot">
           <h3>{labels.get(s.slot)}</h3>
           <div class="pair">
-            <div class="a"><span class="who">You</span> {itemName(s.a)}</div>
-            <div class="b"><span class="who">Them</span> {itemName(s.b)}{s.b?.base && <> <a class="trade" href={tradeUrl(s.b, league, stats)} target="_blank" rel="noopener"
-              title={s.b.rarity === 'unique' || s.b.rarity === 'relic' ? `Search the ${league} trade site for this unique` : `Searches ${league} for this base with all their mods (except crafted) at 90% or more of their rolls. Turn some off on the trade site if there are too few results.`}>trade ↗</a></>}</div>
+            <div class="a"><span class="who">You</span> <ItemName i={s.a} /></div>
+            <div class="b"><span class="who">Them</span> <ItemName i={s.b} />{s.b?.base && <> <a class="trade" href={tradeUrl(s.b, league, stats)} target="_blank" rel="noopener"
+              title={s.b.rarity === 'unique' || s.b.rarity === 'relic' ? `Searches ${league} for this unique${s.b.corrupted ? ', corrupted, with their implicits at 90% or more of their rolls' : ''}` : `Searches ${league} for this base with all their mods (except crafted) at 90% or more of their rolls. Turn some off on the trade site if there are too few results.`}>trade ↗</a></>}</div>
           </div>
           {s.onlyB.length > 0 && <><h4 class="b"><span class="sw b" /> They have, you don't</h4><ul>{s.onlyB.map((m) => <li><ModLine m={m} /></li>)}</ul></>}
           {s.onlyA.length > 0 && <><h4 class="a"><span class="sw a" /> You have, they don't</h4><ul>{s.onlyA.map((m) => <li><ModLine m={m} /></li>)}</ul></>}

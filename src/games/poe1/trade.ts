@@ -33,14 +33,23 @@ export function statFilter(m: Mod, slot: string, stats: TradeStats) {
   return null;
 }
 
-/** Same unique by name, or the same base with their mods (when the stat list has loaded) for anything else. */
+/** Same unique by name (corrupted ones: corrupted, with their implicits), or the same base with their mods for anything else.
+ *  Mod filters need the stat list; without it the search is by name or base only. */
 export function tradeUrl(i: Item, league: string, stats?: TradeStats) {
   const status = { option: 'online' };
+  const filtersFor = (mods: Mod[]) => (stats ? mods.flatMap((m) => statFilter(m, i.slot, stats) ?? []) : []);
+  // Rares need no corrupted filter: a corruption implicit is already one of their mod filters.
   const query = i.rarity === 'unique' || i.rarity === 'relic'
-    ? { status, name: i.name.replace(/^Foulborn /, ''), type: i.base }
+    ? {
+        status, name: i.name.replace(/^Foulborn /, ''), type: i.base,
+        ...(i.corrupted && {
+          stats: [{ type: 'and', filters: filtersFor(i.mods.filter((m) => m.kind === 'implicit')) }],
+          filters: { misc_filters: { filters: { corrupted: { option: 'true' } } } },
+        }),
+      }
     : {
         status, type: i.base,
-        stats: [{ type: 'and', filters: stats ? i.mods.flatMap((m) => statFilter(m, i.slot, stats) ?? []) : [] }],
+        stats: [{ type: 'and', filters: filtersFor(i.mods) }],
         filters: { type_filters: { filters: { rarity: { option: 'nonunique' } } } },
       };
   return `https://www.pathofexile.com/trade/search/${encodeURIComponent(league)}?q=${encodeURIComponent(JSON.stringify({ query }))}`;

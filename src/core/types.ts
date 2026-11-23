@@ -25,6 +25,7 @@ export interface Item {
   name: string;                   // "" for normal and magic items
   base: string;
   rarity: string;                 // lower case: normal | magic | rare | unique | relic
+  corrupted?: true;
   mods: Mod[];
 }
 export interface Mod {
