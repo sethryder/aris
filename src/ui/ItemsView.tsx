@@ -9,9 +9,11 @@ const ItemName = ({ i }: { i?: Item }) => <>{itemName(i)}{i?.corrupted && <span 
 const tag = (m: Mod) => [m.kind !== 'explicit' && m.kind, ...m.flags].filter(Boolean).join(', ');
 // ponytail: fetched once per page load; links fall back to name/base search until it arrives or if it fails.
 let dataP: Promise<TradeData | undefined> | undefined;
-const loadTradeData = () => (dataP ??= fetch(`${import.meta.env.BASE_URL}data/poe1/trade-stats.json`).then((r) => (r.ok ? r.json() : undefined), () => undefined));
+const loadTradeData = () => (dataP ??= fetch(`${import.meta.env.BASE_URL}data/poe1/trade-stats.json`)
+  .then((r) => (r.ok ? r.json() as Promise<TradeData> : undefined)).catch(() => undefined));   // also a non-JSON fallback page
 let leagueP: Promise<string | undefined> | undefined;
-const loadLeague = () => (leagueP ??= getCurrentLeague().catch(() => undefined));
+// A failed lookup (rate limit, network) isn't kept: the next mount tries again.
+const loadLeague = () => (leagueP ??= getCurrentLeague().catch(() => { leagueP = undefined; return undefined; }));
 
 /** "Jewel 26196" → "Jewel near Overcharge". Socket ids missing from the tree sit inside cluster jewels. */
 export function jewelLabel(slot: string, trees: TreeData[]) {

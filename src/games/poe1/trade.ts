@@ -10,7 +10,8 @@ export interface TradeData {
 // Weapons roll local versions of attack mods, armour pieces of defence mods; the trade site marks them " (Local)".
 // ponytail: quivers sit in Weapon 2 too, so a quiver's global accuracy could pick the local id; split by base if it matters.
 const ARMOUR_SLOTS = new Set(['Helmet', 'Body Armour', 'Gloves', 'Boots']);
-const isLocal = (slot: string, tpl: string) => slot.startsWith('Weapon') || (ARMOUR_SLOTS.has(slot) && /Armour|Evasion|Energy Shield/.test(tpl));
+// Exact slots only: abyss jewels socketed in them ("Weapon 1 Abyssal Socket 1") roll global mods.
+const isLocal = (slot: string, tpl: string) => slot === 'Weapon 1' || slot === 'Weapon 2' || (ARMOUR_SLOTS.has(slot) && /Armour|Evasion|Energy Shield/.test(tpl));
 const MIN_ROLL = 0.9;   // search for rolls at least 90% of theirs
 const bits = (x: number) => x.toString(2).replace(/0/g, '').length;
 
@@ -87,5 +88,15 @@ export function tradeTitle(i: Item, league: string, data?: TradeData) {
     : `Searches ${league} for this base. Mod filters are unavailable.`;
 }
 
-/** Trade leagues drop the SSF prefix: "SSF Hardcore Covens" trades in "Hardcore Covens". */
-export const tradeLeague = (league: string) => league.replace(/\bSSF /, '');
+// SSF leagues have no trade site; search the league they'd trade in. Names from GGG's /api/leagues.
+const SSF_PERMANENT: Record<string, string> = {
+  'Solo Self-Found': 'Standard', 'Hardcore SSF': 'Hardcore', 'SSF Ruthless': 'Ruthless', 'Hardcore SSF Ruthless': 'Hardcore Ruthless',
+};
+/** "HC SSF Covens" → "Hardcore Covens", "SSF R Covens" → "Ruthless Covens", "HC SSF R Covens" → "HC Ruthless Covens". */
+export function tradeLeague(league: string) {
+  if (SSF_PERMANENT[league]) return SSF_PERMANENT[league];
+  const m = league.match(/^(HC )?SSF (R )?(.+)$/);
+  if (!m) return league;
+  const [, hc, r, name] = m;
+  return hc && r ? `HC Ruthless ${name}` : hc ? `Hardcore ${name}` : r ? `Ruthless ${name}` : name!;
+}

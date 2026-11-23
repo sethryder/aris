@@ -26,7 +26,9 @@ export function convert(stats: Raw<RawEntry>, items: Raw<{ type: string; name?: 
 
 if (import.meta.main) {
   const get = async (what: string) => {
-    const res = await fetch(`https://www.pathofexile.com/api/trade/data/${what}`, { headers: { 'User-Agent': 'aris-build-script' } });
+    // GGG asks API clients for a contact in the User-Agent; CONTACT is the same .env value the proxy uses.
+    const ua = `aris-build-script${process.env.CONTACT ? ` (contact: ${process.env.CONTACT})` : ''}`;
+    const res = await fetch(`https://www.pathofexile.com/api/trade/data/${what}`, { headers: { 'User-Agent': ua } });
     if (!res.ok) throw new Error(`trade ${what}: HTTP ${res.status}`);
     return res.json();
   };

@@ -24,6 +24,7 @@ test('statFilter matches mod text to trade stat ids', () => {
   expect(statFilter(mod('12% increased Attack Speed'), 'Gloves', stats)?.id).toBe(id('explicit', '#% increased Attack Speed'));
   expect(statFilter(mod('+40 to Armour'), 'Gloves', stats)?.id).toBe(id('explicit', '+# to Armour (Local)'));
   expect(statFilter(mod('+40 to Armour'), 'Belt', stats)?.id).toBe(id('explicit', '+# to Armour'));
+  expect(statFilter(mod('+40 to maximum Energy Shield'), 'Weapon 2 Abyssal Socket 1', stats)?.id).toBe(id('explicit', '+# to maximum Energy Shield'));
   expect(statFilter(mod('+25% to Global Critical Strike Multiplier', 'implicit'), 'Weapon 1', stats)?.id).toMatch(/^implicit\./);
   expect(statFilter(mod('+30 to maximum Life', 'explicit', ['fractured']), 'Helmet', stats)?.id).toMatch(/^fractured\./);
   expect(statFilter(mod('+30 to maximum Life', 'explicit', ['crafted']), 'Helmet', stats)).toBeNull();
@@ -64,9 +65,10 @@ test('PoB magic names search the base inside them', () => {
 });
 
 test('league and hover text', () => {
-  expect(tradeLeague('SSF Hardcore Covens')).toBe('Hardcore Covens');
-  expect(tradeLeague('HC SSF Ruthless Covens')).toBe('HC Ruthless Covens');
-  expect(tradeLeague('Covens')).toBe('Covens');
+  // Every SSF league in GGG's list, mapped to a league in its trade league list.
+  expect(['Solo Self-Found', 'Hardcore SSF', 'SSF Ruthless', 'Hardcore SSF Ruthless', 'SSF Covens', 'HC SSF Covens', 'SSF R Covens', 'HC SSF R Covens'].map(tradeLeague))
+    .toEqual(['Standard', 'Hardcore', 'Ruthless', 'Hardcore Ruthless', 'Covens', 'Hardcore Covens', 'Ruthless Covens', 'HC Ruthless Covens']);
+  expect(['Covens', 'Hardcore Covens', 'Standard', 'Shifting Stones (N23E3)'].map(tradeLeague)).toEqual(['Covens', 'Hardcore Covens', 'Standard', 'Shifting Stones (N23E3)']);
   const ring = { slot: 'Ring 1', name: 'Doom Loop', base: 'Two-Stone Ring', rarity: 'rare', mods: [] };
   expect(tradeTitle(ring, 'Covens', data)).toMatch(/all their mods/);
   expect(tradeTitle(ring, 'Covens')).toMatch(/Mod filters are unavailable/);
