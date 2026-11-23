@@ -26,6 +26,10 @@ export function jewelLabel(slot: string, trees: TreeData[]) {
   return 'Jewel in a cluster jewel';
 }
 
+const GROUPS: [RegExp, string][] = [[/^Weapon/, 'Weapons'], [/^(Helmet|Body Armour|Gloves|Boots)/, 'Armour'], [/^(Amulet|Ring|Belt)/, 'Jewellery'],
+  [/^Flask/, 'Flasks'], [/^Graft/, 'Grafts'], [/^Jewel/, 'Jewels']];
+const group = (slot: string) => GROUPS.find(([re]) => re.test(slot))?.[1] ?? 'Other';   // abyss jewels stay with their item
+
 const ModLine = ({ m }: { m: Mod }) => <>{m.text}{tag(m) && <span class="tag"> {tag(m)}</span>}</>;
 
 export function ItemsView({ items, slotOrder, filter, league, trees }: { items: SlotDiff[]; slotOrder: string[]; filter: string; league: string; trees: TreeData[] }) {
@@ -47,7 +51,8 @@ export function ItemsView({ items, slotOrder, filter, league, trees }: { items: 
   if (!shown.length) return <p class="empty">No items{f ? ' match the filter' : ''}.</p>;
   return (
     <div class="items">
-      {shown.map((s) => (
+      {shown.map((s, i) => (<>
+        {(i === 0 || group(s.slot) !== group(shown[i - 1]!.slot)) && <h2 class="group">{group(s.slot)}</h2>}
         <section class="slot">
           <h3>{labels.get(s.slot)}</h3>
           <div class="pair">
@@ -61,7 +66,7 @@ export function ItemsView({ items, slotOrder, filter, league, trees }: { items: 
             <ul>{s.changed.map((c) => <li>you <ModLine m={c.a} /> → them <ModLine m={c.b} /></li>)}</ul></>}
           {s.same.length > 0 && <details><summary>Same on both ({s.same.length})</summary><ul>{s.same.map((m) => <li><ModLine m={m} /></li>)}</ul></details>}
         </section>
-      ))}
+      </>))}
     </div>
   );
 }
