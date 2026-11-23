@@ -94,6 +94,16 @@ async function route(url: URL, env: Env, ip: string): Promise<Cached> {
       return { body: `{"passives":${passives},"items":${items}}`, type: 'application/json' };
     }, true);
   }
+  if (url.pathname === '/poe1/league') {
+    // GGG lists the current challenge league first; trade links use it when neither build says its league.
+    return cached('league', 6 * 60 * MIN, ip, async () => {
+      const res = await fetch('https://www.pathofexile.com/api/trade/data/leagues', { headers: { 'User-Agent': ua(env), Accept: 'application/json' } });
+      if (!res.ok) throw new HttpError(502, 'upstream_error');
+      const league = (JSON.parse(await readCapped(res)) as { result: { id: string; realm: string }[] }).result.find((l) => l.realm === 'pc')?.id;
+      if (!league) throw new HttpError(502, 'upstream_error');
+      return { body: JSON.stringify({ league }), type: 'application/json' };
+    });
+  }
   if (url.pathname === '/pob') {
     const upstream = buildSiteUrl(q.get('url'));
     if (!upstream) throw new HttpError(400, 'unsupported_link');
