@@ -17,7 +17,7 @@ interface RawPassives {
   mastery_effects?: Record<string, number>; skill_overrides?: Record<string, { name: string; stats?: string[] }>;
   items?: RawItem[];
 }
-interface RawItems { items: RawItem[]; character: { name: string; level: number } }
+interface RawItems { items: RawItem[]; character: { name: string; level: number; league?: string } }
 
 const SKIP = new Set(['Weapon2', 'Offhand2', 'MainInventory', 'ExpandedMainInventory']);
 
@@ -69,6 +69,7 @@ export function fromAccount(raw: { passives: unknown; items: unknown }, tree: Tr
     game: 'poe1',
     source: 'account',
     label: items.character.name,
+    league: items.character.league,
     className: cls?.name ?? '',
     ascendancy,
     level: items.character.level,

@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { expect, test } from 'vitest';
 import { poe1 } from '../src/games/poe1/index.ts';
+import { tradeUrl } from '../src/games/poe1/trade.ts';
 import type { TreeData } from '../src/core/types.ts';
 
 const json = (f: string) => JSON.parse(readFileSync(f, 'utf8'));
@@ -13,6 +14,8 @@ test('fromAccount on the saved fixtures', () => {
   expect([b.className, b.ascendancy, b.level, b.treeVersion]).toEqual(['Ranger', 'Warden', 100, '3_30']);
   const shield = b.items.find((i) => i.slot === 'Weapon 2')!;
   expect(shield.name).toBe("Foulborn Esh's Mirror");
+  expect(b.league).toBe('Covens');
+  expect(JSON.parse(new URL(tradeUrl(shield, b.league!)).searchParams.get('q')!).query).toMatchObject({ name: "Esh's Mirror", type: shield.base });
   expect(shield.mods).toContainEqual({ text: 'Damage cannot be Reflected', kind: 'explicit', flags: ['mutated'] });
   const helm = b.skills.filter((s) => s.slot === 'Helmet').flatMap((s) => s.gems);
   expect(helm.map((g) => g.name)).toEqual(expect.arrayContaining(["Sniper's Mark", 'Mark On Hit']));

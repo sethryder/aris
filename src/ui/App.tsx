@@ -109,7 +109,7 @@ export function App() {
                 </>
               )}
               {tab === 'Skills' && <SkillsView gems={d.gems} filter={filter} />}
-              {tab === 'Items' && <ItemsView items={d.items} slotOrder={games[A.build.game]!.slotOrder} filter={filter} />}
+              {tab === 'Items' && <ItemsView items={d.items} slotOrder={games[A.build.game]!.slotOrder} filter={filter} league={A.build.league ?? B.build.league ?? 'Standard'} />}
               {tab === 'Calcs' && <CalcsView a={A} b={B} filter={filter} />}
             </div>
           </>
