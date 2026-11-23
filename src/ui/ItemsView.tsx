@@ -36,7 +36,7 @@ const group = (slot: string) => GROUPS.find(([re]) => re.test(slot))?.[1] ?? 'Ot
 
 const ModLine = ({ m }: { m: Mod }) => <>{m.text}{tag(m) && <span class="tag"> {tag(m)}</span>}</>;
 
-/** `buildLeague`: their league, else yours (PoB codes don't say). Otherwise the current league. */
+/** `buildLeague`: the league either build is in, if known (PoB codes don't say). Otherwise the current league. */
 export function ItemsView({ items, slotOrder, filter, buildLeague, trees }: { items: SlotDiff[]; slotOrder: string[]; filter: string; buildLeague?: string; trees: TreeData[] }) {
   const [data, setData] = useState<TradeData>();
   const [current, setCurrent] = useState<string>();
