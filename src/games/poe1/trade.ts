@@ -34,7 +34,7 @@ export function statFilter(m: Mod, slot: string, stats: TradeData['stats']) {
       if (!id) continue;
       if (!rolls.length) return { id: `${kind}.${id}` };
       const avg = rolls.reduce((s, r) => s + r, 0) / rolls.length;   // "Adds 2 to 42" searches by the average, like the site
-      const bound = Number.isInteger(avg) ? Math.floor(avg * MIN_ROLL) : Math.floor(avg * MIN_ROLL * 10) / 10;
+      const bound = Number.isInteger(avg) ? Math.ceil(avg * MIN_ROLL) : Math.floor(avg * MIN_ROLL * 10) / 10;
       return { id: `${kind}.${id}`, value: t === tpl ? { min: bound } : { max: -bound } };
     }
   }
@@ -42,6 +42,7 @@ export function statFilter(m: Mod, slot: string, stats: TradeData['stats']) {
 }
 
 const isUnique = (i: Item) => i.rarity === 'unique' || i.rarity === 'relic';
+const isFoulborn = (i: Item) => i.name.startsWith('Foulborn ') || i.mods.some((m) => m.flags.includes('mutated'));
 
 /** PoB keeps a magic item's whole name as its base ("Bottomless Quicksilver Flask of the Lynx"): take the longest known
  *  base inside it. Undefined when it can't be told apart, so the search leaves the base out rather than fail. */
@@ -51,18 +52,20 @@ function baseType(i: Item, data?: TradeData) {
   return known ?? (i.rarity === 'magic' ? undefined : i.base);
 }
 
-/** Same unique by name (corrupted ones: corrupted, with their implicits), or the same base with their mods for anything else. */
+/** Same unique by name, or the same base with their mods for anything else. Corrupted uniques: corrupted, with their
+ *  implicits. Foulborn uniques: Foulborn, with their mutated mods. */
 export function tradeUrl(i: Item, league: string, data?: TradeData) {
   const status = { option: 'online' };
   const filtersFor = (mods: Mod[]) => (data ? mods.flatMap((m) => statFilter(m, i.slot, data.stats) ?? []) : []);
   // Rares need no corrupted filter: a corruption implicit is already one of their mod filters.
   const query = isUnique(i)
     ? {
-        status, name: i.name.replace(/^Foulborn /, ''), type: i.base,
-        ...(i.corrupted && {
-          stats: [{ type: 'and', filters: filtersFor(i.mods.filter((m) => m.kind === 'implicit')) }],
-          filters: { misc_filters: { filters: { corrupted: { option: 'true' } } } },
-        }),
+        status, name: i.name.replace(/^Foulborn /, ''), type: i.base,   // the trade site names Foulborn uniques without it
+        stats: [{ type: 'and', filters: filtersFor(i.mods.filter((m) => (i.corrupted && m.kind === 'implicit') || (isFoulborn(i) && m.flags.includes('mutated')))) }],
+        filters: { misc_filters: { filters: {
+          ...(i.corrupted && { corrupted: { option: 'true' } }),
+          ...(isFoulborn(i) && { mutated: { option: 'true' } }),
+        } } },
       }
     : {
         status, type: baseType(i, data),
@@ -75,7 +78,9 @@ export function tradeUrl(i: Item, league: string, data?: TradeData) {
 /** Hover text for the link, matching what tradeUrl actually searches. */
 export function tradeTitle(i: Item, league: string, data?: TradeData) {
   if (isUnique(i)) {
-    return `Searches ${league} for this unique${i.corrupted ? `, corrupted${data ? ', with their implicits at 90% or more of their rolls' : ''}` : ''}.`;
+    const kinds = [i.corrupted && 'corrupted', isFoulborn(i) && 'Foulborn'].filter(Boolean).join(' and ');
+    const mods = [i.corrupted && 'implicits', isFoulborn(i) && 'mutated mods'].filter(Boolean).join(' and ');
+    return `Searches ${league} for this unique${kinds ? `, ${kinds}${data ? `, with their ${mods} at 90% or more of their rolls` : ''}` : ''}.`;
   }
   return data
     ? `Searches ${league} for this base with all their mods (except crafted) at 90% or more of their rolls. Turn some off on the trade site if there are too few results.`

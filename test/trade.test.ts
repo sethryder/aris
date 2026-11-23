@@ -12,7 +12,7 @@ const id = (kind: string, text: string) => `${kind}.${stats[kind]![text]}`;
 test('statFilter matches mod text to trade stat ids', () => {
   // Weapons prefer the local stat, and search by the average roll.
   expect(statFilter(mod('Adds 2 to 42 Lightning Damage'), 'Weapon 1', stats))
-    .toEqual({ id: id('explicit', 'Adds # to # Lightning Damage (Local)'), value: { min: 19 } });
+    .toEqual({ id: id('explicit', 'Adds # to # Lightning Damage (Local)'), value: { min: 20 } });
   expect(statFilter(mod('Adds 2 to 42 Lightning Damage'), 'Ring 1', stats)?.id).toBe(id('explicit', 'Adds # to # Lightning Damage'));
   // Literal numbers in the template.
   expect(statFilter(mod('1 Added Passive Skill is Magnifier'), 'Jewel 1', stats)).toEqual({ id: id('explicit', '1 Added Passive Skill is Magnifier') });
@@ -43,8 +43,18 @@ test('corrupted uniques search corrupted copies with the same implicits', () => 
   const q = JSON.parse(new URL(tradeUrl(gloves, 'Settlers', data)).searchParams.get('q')!).query;
   expect(q).toMatchObject({ name: 'Command of the Pit', filters: { misc_filters: { filters: { corrupted: { option: 'true' } } } } });
   expect(q.stats[0].filters).toEqual([{ id: id('implicit', 'Curse Enemies with Temporal Chains on Hit') }]);
-  const plain = JSON.parse(new URL(tradeUrl({ ...gloves, corrupted: undefined }, 'Settlers', data)).searchParams.get('q')!).query;
-  expect(plain).not.toHaveProperty('stats');
+  const plain = query(tradeUrl({ ...gloves, corrupted: undefined }, 'Settlers', data));
+  expect(plain.stats[0].filters).toEqual([]);
+  expect(plain.filters.misc_filters.filters).toEqual({});
+});
+
+test('Foulborn uniques search Foulborn copies with the same mutation', () => {
+  const robe = { slot: 'Body Armour', name: "Foulborn Dialla's Malefaction", base: "Sage's Robe", rarity: 'unique',
+    mods: [mod('+1 to Level of Socketed Gems', 'explicit', ['mutated']), mod('+20% to all Elemental Resistances')] };
+  const q = query(tradeUrl(robe, 'Settlers', data));
+  expect(q).toMatchObject({ name: "Dialla's Malefaction", filters: { misc_filters: { filters: { mutated: { option: 'true' } } } } });
+  expect(q.stats[0].filters).toEqual([{ id: id('explicit', '+# to Level of Socketed Gems'), value: { min: 1 } }]);
+  expect(tradeTitle(robe, 'Settlers', data)).toBe('Searches Settlers for this unique, Foulborn, with their mutated mods at 90% or more of their rolls.');
 });
 
 test('PoB magic names search the base inside them', () => {
