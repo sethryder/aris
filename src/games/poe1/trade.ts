@@ -56,7 +56,7 @@ function baseType(i: Item, data?: TradeData) {
 /** Same unique by name, or the same base with their mods for anything else. Corrupted uniques: corrupted, with their
  *  implicits. Foulborn uniques: Foulborn, with their mutated mods. */
 export function tradeUrl(i: Item, league: string, data?: TradeData) {
-  const status = { option: 'online' };
+  const status = { option: 'available' };   // "Instant Buyout and In Person" on the trade site
   const filtersFor = (mods: Mod[]) => (data ? mods.flatMap((m) => statFilter(m, i.slot, data.stats) ?? []) : []);
   // Rares need no corrupted filter: a corruption implicit is already one of their mod filters.
   const query = isUnique(i)
