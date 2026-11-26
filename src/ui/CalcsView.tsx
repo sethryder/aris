@@ -124,7 +124,8 @@ export function CalcsView({ a, b, filter }: { a: Loaded; b: Loaded; filter: stri
   );
 }
 
-type Mark = { kind: 'same' } | { kind: 'changed'; other: string } | { kind: 'only' };
+/** `at` is the paired row's index on the other side. */
+type Mark = { kind: 'same'; at: number } | { kind: 'changed'; other: string; at: number } | { kind: 'only' };
 
 /** Flatten a row's breakdown tables; `id` is the source row without its value, so "+22 vs +23 from Bone Offering" pairs up. */
 const sourceRows = (r?: CalcRow) => r?.cells.flatMap((c) => c.parts.flatMap((p) => {
@@ -139,13 +140,13 @@ export function markSources(mine?: CalcRow, theirs?: CalcRow): Mark[] {
   const take = (pred: (o: (typeof pool)[number]) => boolean) => {
     const i = pool.findIndex((o, j) => !used.has(j) && pred(o));
     if (i >= 0) used.add(i);
-    return i >= 0 ? pool[i] : undefined;
+    return i;
   };
   const rows = sourceRows(mine);
-  const exact = rows.map((m) => (take((o) => o.full === m.full) ? ({ kind: 'same' } as Mark) : null));
+  const exact = rows.map((m) => { const i = take((o) => o.full === m.full); return i >= 0 ? ({ kind: 'same', at: i } as Mark) : null; });
   return rows.map((m, k) => exact[k] ?? (() => {
-    const o = take((x) => x.id === m.id);
-    return o ? ({ kind: 'changed', other: o.value } as Mark) : ({ kind: 'only' } as Mark);
+    const i = take((x) => x.id === m.id);
+    return i >= 0 ? ({ kind: 'changed', other: pool[i]!.value, at: i } as Mark) : ({ kind: 'only' } as Mark);
   })());
 }
 
@@ -157,17 +158,26 @@ function markLine(line: string, theirs?: CalcRow): Mark['kind'] {
   return lines.some((l) => l.split(':')[0] === label) ? 'changed' : 'only';
 }
 
-/** Both sides' breakdowns, each source row marked as same, different value, or only on that side. */
+/** Both sides' breakdowns, each source row marked as same, different value, or only on that side. Hovering a row highlights its pair on the other side. */
 function Breakdowns({ a, b }: { a?: CalcRow; b?: CalcRow }) {
+  const [hot, setHot] = useState<[number, number] | null>(null); // [your row, their row]; -1 = no pair
+  const pairs = markSources(a, b).map((m) => (m.kind === 'only' ? -1 : m.at)); // one pairing drives both sides
+  const [rankA, rankB] = alignRanks(pairs);
   return (
-    <div class="pair breakdowns">
-      <Side who="a" label="You" otherLabel="them" row={a} other={b} />
-      <Side who="b" label="Them" otherLabel="you" row={b} other={a} />
+    <div class="pair breakdowns" onMouseLeave={() => setHot(null)}>
+      <Side who="a" label="You" otherLabel="them" row={a} other={b} rank={rankA} hot={hot?.[0]} onHot={(n) => setHot([n, pairs[n] ?? -1])} />
+      <Side who="b" label="Them" otherLabel="you" row={b} other={a} rank={rankB} hot={hot?.[1]} onHot={(n) => setHot([pairs.indexOf(n), n])} />
     </div>
   );
 }
 
-function Side({ who, label, otherLabel, row, other }: { who: 'a' | 'b'; label: string; otherLabel: string; row?: CalcRow; other?: CalcRow }) {
+/** Sort keys that line pairs up: paired rows first, both sides in your order; rows only one side has go last, in their own order. */
+export function alignRanks(pairs: number[]): [(k: number) => number, (j: number) => number] {
+  const last = (k: number) => 1e9 + k;
+  return [(k) => (pairs[k]! >= 0 ? k : last(k)), (j) => { const i = pairs.indexOf(j); return i >= 0 ? i : last(j); }];
+}
+
+function Side({ who, label, otherLabel, row, other, rank, hot, onHot }: { who: 'a' | 'b'; label: string; otherLabel: string; row?: CalcRow; other?: CalcRow; rank: (k: number) => number; hot?: number; onHot: (n: number) => void }) {
   const marks = markSources(row, other);
   let n = 0;
   return (
@@ -182,10 +192,10 @@ function Side({ who, label, otherLabel, row, other }: { who: 'a' | 'b'; label: s
             <table>
               <thead><tr>{p.cols.map((col) => <th scope="col">{col}</th>)}</tr></thead>
               <tbody>
-                {p.rows.map((x) => {
-                  const m = marks[n++]!;
+                {p.rows.map((x) => ({ x, k: n++ })).sort((r, t) => rank(r.k) - rank(t.k)).map(({ x, k }) => {
+                  const m = marks[k]!;
                   return (
-                    <tr class={m.kind === 'same' ? '' : `mark ${m.kind} ${who}`}>
+                    <tr class={`${m.kind === 'same' ? '' : `mark ${m.kind} ${who}`}${k === hot ? ' hot' : ''}`} onMouseEnter={() => onHot(k)}>
                       {x.map((v, i) => (
                         <td>{v}{m.kind === 'changed' && i === 0 && <span class="other"> ({otherLabel} {m.other})</span>}</td>
                       ))}
